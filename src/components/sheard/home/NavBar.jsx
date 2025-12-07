@@ -73,7 +73,7 @@ const Navbar = () => {
 
                         </label>
                     </div>
-                    <a className="button btn">Button</a>
+                    <Link to={`/login`} className="button btn">Login</Link>
                 </div>
             </div>
         </div>
