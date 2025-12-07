@@ -3,6 +3,7 @@ import { FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from "react-fast-marquee";
 import { Link } from 'react-router';
+import { useForm } from 'react-hook-form';
 
 
 const images = [
@@ -21,6 +22,17 @@ const images = [
 ];
 
 const RegisterPage = () => {
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm();
+
+    const handleRegister = (data) => {
+        console.log("after register:", data)
+    }
+
     return (
         <div>
             <div className="min-h-screen bg-base-300 flex items-center justify-center px-4 py-10">
@@ -33,7 +45,7 @@ const RegisterPage = () => {
                             Book bus, train, launch & flight tickets instantly.
                         </p>
 
-                        <form>
+                        <form onSubmit={handleSubmit(handleRegister)}>
                             <fieldset className="fieldset">
                                 {/* Google */}
                                 <button className="w-full flex items-center justify-center gap-2 border rounded-lg py-3 hover:bg-base-200 transition cursor-pointer">
@@ -51,37 +63,62 @@ const RegisterPage = () => {
                                 <label className="text-sm font-medium">Full Name</label>
                                 <input
                                     type="text"
+                                    {...register("name", { required: true })}
                                     placeholder="Enter your full name"
                                     className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
-                                
+                                {
+                                    errors.name?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Name is required</p>
+                                }
+
                                 {/* Photo URL */}
                                 <label className="text-sm font-medium">Photo URL</label>
                                 <input
                                     type="text"
+                                    {...register("photoURL", { required: true })}
                                     placeholder="Enter your Photo URL"
                                     className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
+                                {
+                                    errors.photoURL?.type === "required" && <p className='text-xs text-red-500 -mt-4'>PhotoURL is required</p>
+                                }
 
                                 {/* Email */}
                                 <label className="text-sm font-medium">Email Address</label>
                                 <input
                                     type="email"
+                                    {...register("email", { required: true })}
                                     placeholder="Enter your email"
                                     className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
+                                {
+                                    errors.email?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Email is required</p>
+                                }
 
                                 {/* Password */}
                                 <label className="text-sm font-medium">Password</label>
                                 <input
                                     type="password"
+                                    {...register("password", { required: true, minLength: 6, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/~`]).+$/ })}
                                     placeholder="At least 6 characters"
                                     className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
+                                {
+                                    errors.password?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Password is required</p>
+                                }
+                                {
+                                    errors.password?.type === "minLength" && <p className='text-xs text-red-500 -mt-4'>Password must be 6 characters or longer</p>
+                                }
+                                {
+                                    errors.password?.type === "pattern" && <p className='text-xs text-red-500 -mt-4'>Password must include uppercase, lowercase, special character.</p>
+                                }
 
                                 {/* Agree */}
                                 <label className="flex items-center gap-2 text-sm mt-2 mb-4">
-                                    <input type="checkbox" />
+                                    <input
+                                        type="checkbox"
+                                        {...register("box", { required: true })}
+                                    />
                                     I agree to the{" "}
                                     <span className="text-primary-content font-semibold">Terms</span>,{" "}
                                     <span className="text-primary-content font-semibold">Privacy Policy</span>{" "}
