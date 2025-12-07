@@ -62,7 +62,7 @@ const LatestTickets = () => {
     const navigate = useNavigate();
     return (
         <div>
-            <section className="py-12 bg-base-300">
+            <section className="py-12 bg-base-100">
                 <div className="max-w-[1200px] mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-8 text-gray-800-content">Latest Tickets</h2>
 
@@ -94,7 +94,7 @@ const LatestTickets = () => {
                                     {/* See Details Button */}
                                     <button
                                         onClick={() => navigate(`/ticket/${ticket.id}`)}
-                                        className="btn cursor-pointer w-full bg-secondary-content text-base-100 py-2 rounded hover:bg-primary-content transition"
+                                        className="btn button cursor-pointer w-full bg-secondary-content text-base-100 py-2 rounded hover:bg-primary-content transition"
                                     >
                                         See Details
                                     </button>

@@ -63,13 +63,15 @@ const Advertisement = () => {
     const navigate = useNavigate();
     return (
         <div>
-            <section className="py-12">
+            <section className="py-12 bg-base-200">
                 <div className="max-w-[1200px] mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-8 text-secondary-content">Advertisement Tickets</h2>
 
                     <div className="grid md:grid-cols-3 gap-6">
                         {advertisementTickets.map(ticket => (
-                            <div key={ticket.id} className="bg-white-content rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow">
+                            <div
+                                key={ticket.id}
+                                className="bg-base-100 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow">
 
                                 <img src={ticket.image} alt={ticket.title} className="w-full h-48 object-cover" />
 
@@ -86,7 +88,7 @@ const Advertisement = () => {
 
                                     <button
                                         onClick={() => navigate(`/ticket/${ticket.id}`)}
-                                        className=" btn cursor-pointer w-full bg-secondary-content text-base-100 py-2 rounded hover:bg-primary-content transition" 
+                                        className=" button btn cursor-pointer w-full bg-secondary-content text-base-100 py-2 rounded hover:bg-primary-content transition"
                                     >
                                         See Details
                                     </button>

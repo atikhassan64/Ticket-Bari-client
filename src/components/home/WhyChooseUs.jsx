@@ -9,12 +9,14 @@ const reasons = [
 const WhyChooseUs = () => {
     return (
         <div>
-            <section className="py-12 bg-white">
+            <section className="py-12 bg-base-100">
                 <div className="max-w-[1200px] mx-auto px-4">
-                    <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Why Choose Us?</h2>
+                    <h2 className="text-3xl font-bold mb-8 text-gray-800-content">Why Choose Us?</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                         {reasons.map((reason, index) => (
-                            <div key={index} className="p-6 bg-gray-50 rounded-xl shadow hover:shadow-lg transition-shadow text-center">
+                            <div
+                                key={index}
+                                className="p-6 bg-base-200 rounded-xl shadow hover:shadow-lg transition-shadow text-center">
                                 <div className="text-4xl mb-3">{reason.icon}</div>
                                 <h3 className="text-xl font-semibold mb-2">{reason.title}</h3>
                                 <p className="text-gray-500">{reason.description}</p>

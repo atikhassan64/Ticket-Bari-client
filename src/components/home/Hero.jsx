@@ -217,7 +217,7 @@ const Hero = () => {
         >
             {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
-                    <div className="hero md:min-h-[400px] relative overflow-hidden">
+                    <div className="hero md:min-h-[400px] relative overflow-hidden cursor-pointer">
 
                         <motion.div
                             className="absolute inset-0 bg-cover bg-center"
