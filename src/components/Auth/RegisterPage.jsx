@@ -1,9 +1,9 @@
 import React from 'react';
-import { FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from "react-fast-marquee";
 import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
 
 
 const images = [
@@ -22,15 +22,31 @@ const images = [
 ];
 
 const RegisterPage = () => {
-
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm();
+    const { createUser, logInWithGoogle } = useAuth();
 
     const handleRegister = (data) => {
-        console.log("after register:", data)
+        createUser(data.email, data.password)
+            .then(result => {
+                console.log(result.user)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const handleGoogleRegister = () => {
+        logInWithGoogle()
+            .then(result => {
+                console.log(result.user)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     return (
@@ -47,8 +63,12 @@ const RegisterPage = () => {
 
                         <form onSubmit={handleSubmit(handleRegister)}>
                             <fieldset className="fieldset">
+
                                 {/* Google */}
-                                <button className="w-full flex items-center justify-center gap-2 border rounded-lg py-3 hover:bg-base-200 transition cursor-pointer">
+                                <button
+                                    type='button'
+                                    onClick={handleGoogleRegister}
+                                    className="w-full flex items-center justify-center gap-2 border rounded-lg py-3 hover:bg-base-200 transition cursor-pointer">
                                     <FcGoogle size={22} /> Sign up with Google
                                 </button>
 
@@ -132,7 +152,7 @@ const RegisterPage = () => {
                             </fieldset>
                         </form>
 
-                        <Link className="text-sm text-gray-500">
+                        <Link to={`/login`} className="text-sm text-gray-500">
                             Already have an account? <span className="text-primary-content cursor-pointer font-medium">Login</span>
                         </Link>
                     </div>

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import Logo from '../../../assets/logo.png'
 import LogoWhite from '../../../assets/logo-white.png'
+import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
-
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
+    const { user, logOutUser } = useAuth();
 
     useEffect(() => {
         const html = document.querySelector("html");
@@ -14,17 +14,28 @@ const Navbar = () => {
         localStorage.setItem("theme", theme);
     }, [theme]);
 
-
     const handleTheme = (checked) => {
         setTheme(checked ? "dark" : "light");
     };
-
 
     const links = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
         {/* <li><NavLink to={'/meals'}>Meals</NavLink></li>
         <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li> */}
     </>
+
+    const handleLogOut = () => {
+        logOutUser()
+            .then(() => {
+                // toast.success('SignOut success');
+                console.log('log out success')
+            })
+            .catch((error) => {
+                // toast.error(error.message);
+                console.log(error)
+            })
+    }
+
     return (
         <div className=' shadow-sm '>
             <div className="navbar max-w-[1200px] mx-auto ">
@@ -73,7 +84,12 @@ const Navbar = () => {
 
                         </label>
                     </div>
-                    <Link to={`/login`} className="button btn">Login</Link>
+                    {
+                        user ?
+                            <Link onClick={handleLogOut} className="button btn">LogOut</Link>
+                            :
+                            <Link to={`/login`} className="button btn">LogIn</Link>
+                    }
                 </div>
             </div>
         </div>
