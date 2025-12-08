@@ -1,7 +1,7 @@
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from "react-fast-marquee";
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 
@@ -27,12 +27,27 @@ const RegisterPage = () => {
         handleSubmit,
         formState: { errors }
     } = useForm();
-    const { createUser, logInWithGoogle } = useAuth();
+    const navigate = useNavigate();
+    const { createUser, logInWithGoogle, updateUser, setUser } = useAuth();
 
     const handleRegister = (data) => {
+
+
+
         createUser(data.email, data.password)
             .then(result => {
-                console.log(result.user)
+                const user = result.user;
+                updateUser({ displayName: data.name, photoURL: data.photoURL })
+                    .then(() => {
+                        setUser({ ...user, displayName: data.name, photoURL: data.photoURL });
+                        // e.target.reset();
+                    })
+                    .catch((error) => {
+                        // toast.error(error.message);
+                        console.log(error);
+                        setUser(user);
+                    })
+                navigate(location?.state || '/')
             })
             .catch(error => {
                 console.log(error)
@@ -42,7 +57,9 @@ const RegisterPage = () => {
     const handleGoogleRegister = () => {
         logInWithGoogle()
             .then(result => {
-                console.log(result.user)
+                const user = result.user;
+                setUser(user);
+                navigate(location?.state || '/');
             })
             .catch(error => {
                 console.log(error)

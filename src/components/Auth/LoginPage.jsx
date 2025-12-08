@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from 'react-fast-marquee';
@@ -26,11 +26,15 @@ const LoginPage = () => {
         handleSubmit,
         formState: { errors }
     } = useForm();
-    const { logInUser, logInWithGoogle } = useAuth();
+    const { logInUser, logInWithGoogle, setUser } = useAuth();
+    const navigate = useNavigate();
 
     const handleRegister = (data) => {
         logInUser(data.email, data.password)
             .then(result => {
+                const user = result.user;
+                setUser(user);
+                navigate(location?.state || '/');
                 console.log(result.user)
             })
             .catch(error => {
@@ -41,6 +45,10 @@ const LoginPage = () => {
     const handleGoogleLogIn = () => {
         logInWithGoogle()
             .then(result => {
+                const user = result.user;
+                // toast.success("Login Success")
+                setUser(user);
+                navigate(location?.state || '/')
                 console.log(result.user)
             })
             .catch(error => {
@@ -55,7 +63,7 @@ const LoginPage = () => {
 
                     {/* Left Side */}
                     <div className="p-6 md:p-10">
-                        <h2 className="text-3xl font-bold mb-2">✦ Create Your Account</h2>
+                        <h2 className="text-3xl font-bold mb-2">✦ Login Your Account</h2>
                         <p className="text-gray-500 mb-6">
                             Book bus, train, launch & flight tickets instantly.
                         </p>
@@ -67,7 +75,7 @@ const LoginPage = () => {
                                     type='button'
                                     onClick={handleGoogleLogIn}
                                     className="w-full flex items-center justify-center gap-2 border rounded-lg py-3 hover:bg-base-200 transition cursor-pointer">
-                                    <FcGoogle size={22} /> Sign up with Google
+                                    <FcGoogle size={22} /> Sign in with Google
                                 </button>
 
                                 {/* Divider */}
@@ -145,7 +153,7 @@ const LoginPage = () => {
 
                                 {/* Submit Button */}
                                 <button className="button btn w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition flex items-center justify-center mb-3">
-                                    Create Account →
+                                    Login Account →
                                 </button>
                             </fieldset>
                         </form>
