@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import Logo from '../../../assets/logo.png'
 import LogoWhite from '../../../assets/logo-white.png'
 import useAuth from '../../../hooks/useAuth';
@@ -8,8 +8,7 @@ import toast from 'react-hot-toast';
 const Navbar = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
     const { user, logOutUser } = useAuth();
-    console.log(user)
-
+    const navigate = useNavigate();
     useEffect(() => {
         const html = document.querySelector("html");
         html.setAttribute("data-theme", theme);
@@ -30,6 +29,7 @@ const Navbar = () => {
         logOutUser()
             .then(() => {
                 toast.success('Logout successfully');
+                navigate("/");
             })
             .catch((error) => {
                 toast.error(error.message);
@@ -38,7 +38,7 @@ const Navbar = () => {
 
     return (
         <div className=' shadow-sm '>
-            <div className="navbar max-w-[1200px] mx-auto ">
+            <div className="navbar max-w-11/12 mx-auto ">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

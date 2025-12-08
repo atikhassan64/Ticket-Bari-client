@@ -1,7 +1,7 @@
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from "react-fast-marquee";
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
@@ -23,16 +23,16 @@ const images = [
 ];
 
 const RegisterPage = () => {
+    const { createUser, logInWithGoogle, updateUser, setUser } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm();
-    const navigate = useNavigate();
-    const { createUser, logInWithGoogle, updateUser, setUser } = useAuth();
 
     const handleRegister = (data) => {
-
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
@@ -168,7 +168,9 @@ const RegisterPage = () => {
                             </fieldset>
                         </form>
 
-                        <Link to={`/login`} className="text-sm text-gray-500">
+                        <Link to={`/login`}
+                            state={location?.state}
+                            className="text-sm text-gray-500">
                             Already have an account? <span className="text-primary-content cursor-pointer font-medium">Login</span>
                         </Link>
                     </div>

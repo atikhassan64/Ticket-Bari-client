@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from 'react-fast-marquee';
@@ -31,6 +31,7 @@ const LoginPage = () => {
     const { logInUser, logInWithGoogle, setUser } = useAuth();
     const navigate = useNavigate();
     const emailRef = useRef("");
+    const location = useLocation();
 
     const handleRegister = (data) => {
         logInUser(data.email, data.password)
@@ -134,7 +135,9 @@ const LoginPage = () => {
                             </fieldset>
                         </form>
 
-                        <Link to={`/register`} className="text-sm text-gray-500">
+                        <Link to={`/register`}
+                            state={location?.state}
+                            className="text-sm text-gray-500">
                             Don't have an account? <span className="text-primary-content cursor-pointer font-medium">Register</span>
                         </Link>
                     </div>
