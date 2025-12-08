@@ -3,7 +3,6 @@ import { FaFacebook, FaPhone, FaEnvelope } from "react-icons/fa";
 import { SiStripe } from "react-icons/si";
 import logoWhite from '../../../assets/logo-white.png'
 import logo from '../../../assets/logo.png'
-import { Link } from "react-router";
 
 const Footer = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -29,9 +28,9 @@ const Footer = () => {
                     <div className="-ml-3">
                         {
                             theme === "dark" ?
-                                <Link to={`/`} className='w-30'><img src={logoWhite} alt="" /></Link>
+                                <a href="/" className='w-30'><img src={logoWhite} alt="" /></a>
                                 :
-                                <Link to={`/`} className='w-30'><img src={logo} alt="" /></Link>
+                                <a href="/" className='w-30'><img src={logo} alt="" /></a>
                         }
                     </div>
 

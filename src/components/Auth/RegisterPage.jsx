@@ -4,6 +4,7 @@ import Marquee from "react-fast-marquee";
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 
 const images = [
@@ -32,25 +33,22 @@ const RegisterPage = () => {
 
     const handleRegister = (data) => {
 
-
-
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 updateUser({ displayName: data.name, photoURL: data.photoURL })
                     .then(() => {
                         setUser({ ...user, displayName: data.name, photoURL: data.photoURL });
-                        // e.target.reset();
+                        toast.success("Registration is Successfully");
                     })
                     .catch((error) => {
-                        // toast.error(error.message);
-                        console.log(error);
+                        toast.error(error.message);
                         setUser(user);
                     })
                 navigate(location?.state || '/')
             })
             .catch(error => {
-                console.log(error)
+                toast.error(error.message);
             })
     }
 
@@ -59,6 +57,7 @@ const RegisterPage = () => {
             .then(result => {
                 const user = result.user;
                 setUser(user);
+                toast.success("Registration is Successfully")
                 navigate(location?.state || '/');
             })
             .catch(error => {
@@ -102,7 +101,7 @@ const RegisterPage = () => {
                                     type="text"
                                     {...register("name", { required: true })}
                                     placeholder="Enter your full name"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
+                                    className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
                                 {
                                     errors.name?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Name is required</p>
@@ -114,7 +113,7 @@ const RegisterPage = () => {
                                     type="text"
                                     {...register("photoURL", { required: true })}
                                     placeholder="Enter your Photo URL"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
+                                    className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
                                 {
                                     errors.photoURL?.type === "required" && <p className='text-xs text-red-500 -mt-4'>PhotoURL is required</p>
@@ -126,7 +125,7 @@ const RegisterPage = () => {
                                     type="email"
                                     {...register("email", { required: true })}
                                     placeholder="Enter your email"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
+                                    className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
                                 {
                                     errors.email?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Email is required</p>
@@ -138,7 +137,7 @@ const RegisterPage = () => {
                                     type="password"
                                     {...register("password", { required: true, minLength: 6, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/~`]).+$/ })}
                                     placeholder="At least 6 characters"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
+                                    className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
                                 {
                                     errors.password?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Password is required</p>
@@ -151,7 +150,7 @@ const RegisterPage = () => {
                                 }
 
                                 {/* Agree */}
-                                <label className="flex items-center gap-2 text-sm mt-2 mb-4">
+                                <label className="flex items-center gap-2 text-sm  mb-2">
                                     <input
                                         type="checkbox"
                                         {...register("box", { required: true })}
@@ -163,7 +162,7 @@ const RegisterPage = () => {
                                 </label>
 
                                 {/* Submit Button */}
-                                <button className="button btn w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition flex items-center justify-center mb-3">
+                                <button className="button btn w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition flex items-center justify-center mb-2">
                                     Create Account →
                                 </button>
                             </fieldset>

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from 'react-fast-marquee';
+import toast from 'react-hot-toast';
 
 const images = [
     {
@@ -24,10 +25,12 @@ const LoginPage = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        reset
     } = useForm();
     const { logInUser, logInWithGoogle, setUser } = useAuth();
     const navigate = useNavigate();
+    const emailRef = useRef("");
 
     const handleRegister = (data) => {
         logInUser(data.email, data.password)
@@ -35,10 +38,11 @@ const LoginPage = () => {
                 const user = result.user;
                 setUser(user);
                 navigate(location?.state || '/');
-                console.log(result.user)
+                reset()
+                toast.success("Login Successfully")
             })
             .catch(error => {
-                console.log(error)
+                toast.error(error.message);
             })
     }
 
@@ -46,15 +50,19 @@ const LoginPage = () => {
         logInWithGoogle()
             .then(result => {
                 const user = result.user;
-                // toast.success("Login Success")
+                toast.success("Login Successfully")
                 setUser(user);
                 navigate(location?.state || '/')
-                console.log(result.user)
             })
             .catch(error => {
-                console.log(error)
+                toast.error(error.message)
             })
     }
+
+    const handleForgetPage = () => {
+        const email = emailRef.current;
+        navigate('/forget-password', { state: { email: email } });
+    };
 
     return (
         <div>
@@ -85,37 +93,14 @@ const LoginPage = () => {
                                     <div className="h-0.5 bg-gray-300 w-full"></div>
                                 </div>
 
-                                {/* Name */}
-                                {/* <label className="text-sm font-medium">Full Name</label>
-                                <input
-                                    type="text"
-                                    {...register("name", { required: true })}
-                                    placeholder="Enter your full name"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
-                                />
-                                {
-                                    errors.name?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Name is required</p>
-                                } */}
-
-                                {/* Photo URL */}
-                                {/* <label className="text-sm font-medium">Photo URL</label>
-                                <input
-                                    type="text"
-                                    {...register("photoURL", { required: true })}
-                                    placeholder="Enter your Photo URL"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
-                                />
-                                {
-                                    errors.photoURL?.type === "required" && <p className='text-xs text-red-500 -mt-4'>PhotoURL is required</p>
-                                } */}
-
                                 {/* Email */}
                                 <label className="text-sm font-medium">Email Address</label>
                                 <input
                                     type="email"
                                     {...register("email", { required: true })}
                                     placeholder="Enter your email"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
+                                    onChange={(e) => (emailRef.current = e.target.value)}
+                                    className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
                                 {
                                     errors.email?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Email is required</p>
@@ -127,7 +112,7 @@ const LoginPage = () => {
                                     type="password"
                                     {...register("password", { required: true, minLength: 6, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/~`]).+$/ })}
                                     placeholder="At least 6 characters"
-                                    className="w-full mt-1 mb-4 border rounded-lg px-4 py-2 focus:outline-primary-content"
+                                    className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                 />
                                 {
                                     errors.password?.type === "required" && <p className='text-xs text-red-500 -mt-4'>Password is required</p>
@@ -139,20 +124,11 @@ const LoginPage = () => {
                                     errors.password?.type === "pattern" && <p className='text-xs text-red-500 -mt-4'>Password must include uppercase, lowercase, special character.</p>
                                 }
 
-                                {/* Agree */}
-                                {/* <label className="flex items-center gap-2 text-sm mt-2 mb-4">
-                                    <input
-                                        type="checkbox"
-                                        {...register("box", { required: true })}
-                                    />
-                                    I agree to the{" "}
-                                    <span className="text-primary-content font-semibold">Terms</span>,{" "}
-                                    <span className="text-primary-content font-semibold">Privacy Policy</span>{" "}
-                                    and <span className="text-primary-content font-semibold">Fees</span>.
-                                </label> */}
+                                {/* Forget btn */}
+                                <div><button onClick={handleForgetPage} className="link link-hover">Forgot password?</button></div>
 
                                 {/* Submit Button */}
-                                <button className="button btn w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition flex items-center justify-center mb-3">
+                                <button className="button btn w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition flex items-center justify-center mb-2">
                                     Login Account →
                                 </button>
                             </fieldset>

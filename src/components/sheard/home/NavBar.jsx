@@ -3,10 +3,12 @@ import { Link, NavLink } from 'react-router';
 import Logo from '../../../assets/logo.png'
 import LogoWhite from '../../../assets/logo-white.png'
 import useAuth from '../../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
     const { user, logOutUser } = useAuth();
+    console.log(user)
 
     useEffect(() => {
         const html = document.querySelector("html");
@@ -20,19 +22,17 @@ const Navbar = () => {
 
     const links = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
-        {/* <li><NavLink to={'/meals'}>Meals</NavLink></li>
-        <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li> */}
+        <li><NavLink to={'/all-tickets'}>All Tickets</NavLink></li>
+        <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
     </>
 
     const handleLogOut = () => {
         logOutUser()
             .then(() => {
-                // toast.success('SignOut success');
-                console.log('log out success')
+                toast.success('Logout successfully');
             })
             .catch((error) => {
-                // toast.error(error.message);
-                console.log(error)
+                toast.error(error.message);
             })
     }
 
@@ -69,7 +69,7 @@ const Navbar = () => {
                         {links}
                     </ul>
                 </div>
-                <div className="navbar-end">
+                {/* <div className="navbar-end">
                     <div>
                         <label className="toggle text-base-content mr-3">
                             <input
@@ -90,7 +90,70 @@ const Navbar = () => {
                             :
                             <Link to={`/login`} className="button btn">LogIn</Link>
                     }
+                </div> */}
+
+                <div className="navbar-end">
+
+                    <div>
+                        <label className="toggle text-base-content mr-3">
+                            <input
+                                onChange={(e) => handleTheme(e.target.checked)}
+                                type="checkbox"
+                                defaultChecked={localStorage.getItem('theme') === "dark"}
+                                className="theme-controller"
+                            />
+                            <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></g></svg>
+                            <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></g></svg>
+                        </label>
+                    </div>
+
+                    {user ? (
+                        <div className="dropdown dropdown-end">
+                            <div tabIndex={0} role="button" className="flex items-center gap-2 cursor-pointer">
+                                <img
+                                    src={user?.photoURL}
+                                    className="w-10 h-10 rounded-full border"
+                                    alt="avatar"
+                                />
+                                <span className="font-medium">{user?.displayName}</span>
+                                <svg width="16" height="16">
+                                    <path d="M4 6l4 4 4-4" stroke="currentColor" fill="none" />
+                                </svg>
+                            </div>
+
+                            <ul
+                                tabIndex={0}
+                                className="dropdown-content menu p-4 shadow-lg bg-base-100 rounded-lg w-52 z-10"
+                            >
+                                <li>
+                                    <Link to="/profile">
+                                        <i className="fa-regular fa-user"></i> Profile
+                                    </Link>
+                                </li>
+                                {/* <li>
+                                    <Link to="/calendar">
+                                        <i className="fa-regular fa-calendar"></i> Calendar
+                                    </Link>
+                                </li> */}
+                                {/* <li>
+                                    <Link to="/settings">
+                                        <i className="fa-solid fa-sliders"></i> Settings
+                                    </Link>
+                                </li> */}
+                                <div className="border-t my-2"></div>
+                                <li>
+                                    <button onClick={handleLogOut} className="text-red-500">
+                                        <i className="fa-solid fa-power-off"></i> Logout
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    ) : (
+                        <Link to="/login" className="button btn">LogIn</Link>
+                    )}
+
                 </div>
+
             </div>
         </div>
     );
