@@ -7,6 +7,9 @@ import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 import PrivateRoute from "./PrivateRoute";
 import AllTickets from "../pages/All_Tickets/AllTickets";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import TicketsDetailsPage from "../pages/All_Tickets/TicketsDetailsPage";
+import AddTickets from "../pages/VendorDashboard/AddTickets";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
     {
@@ -33,10 +36,21 @@ export const router = createBrowserRouter([
                 path: "all-tickets",
                 element: <PrivateRoute><AllTickets></AllTickets></PrivateRoute>
             },
+
             {
-                path: "dashboard",
-                element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>
+                path: "ticket-details/1",
+                element: <PrivateRoute><TicketsDetailsPage></TicketsDetailsPage></PrivateRoute>
+            }
+        ]
+    },
+    {
+        path: "dashboard",
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        children: [
+            {
+                path: "add-tickets",
+                element: <PrivateRoute><AddTickets></AddTickets></PrivateRoute>
             }
         ]
     }
-])
+]);

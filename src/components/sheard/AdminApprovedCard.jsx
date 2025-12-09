@@ -112,7 +112,7 @@ const AdminApprovedCard = () => {
 
                                     {/* See Details Button */}
                                     <button
-                                        onClick={() => navigate(`/ticket/${ticket.id}`)}
+                                        onClick={() => navigate(`/ticket-details/${ticket.id}`)}
                                         className="btn button cursor-pointer w-full bg-secondary-content text-base-100 py-2 rounded hover:bg-primary-content transition"
                                     >
                                         See Details

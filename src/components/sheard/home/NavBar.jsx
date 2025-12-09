@@ -9,11 +9,13 @@ const Navbar = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
     const { user, logOutUser } = useAuth();
     const navigate = useNavigate();
+
     useEffect(() => {
         const html = document.querySelector("html");
         html.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
     }, [theme]);
+
 
     const handleTheme = (checked) => {
         setTheme(checked ? "dark" : "light");
