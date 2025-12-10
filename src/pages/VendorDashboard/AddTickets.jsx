@@ -141,17 +141,36 @@
 
 // export default AddTickets;
 
+import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const AddTickets = () => {
+    const axiosSecure = useAxiosSecure();
+    const { user } = useAuth();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const handleAddTickets = (data) => {
-        const uploadPhoto = data.photo[0];
+        const uploadPhoto = data.image[0];
         const formData = new FormData();
-        formData.append("photo", uploadPhoto);
+        formData.append("image", uploadPhoto);
         const photo_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_photo_host}`
+        axios.post(photo_API_URL, formData)
+            .then(res => {
+                const imageURL = res.data.data.url;
+                const ticket = {
+                    ...data,
+                    image: imageURL,
+                    status: "pending",
+                }
+                // console.log("final data : ", ticket)
+                axiosSecure.post("/tickets", ticket)
+                    .then(res => {
+                        console.log("to Database: ", res.data)
+                    })
+            })
         reset()
     };
 
@@ -286,11 +305,11 @@ const AddTickets = () => {
                         <label className="font-medium">Upload Image</label>
                         <input
                             type="file"
-                            {...register("photo", { required: true })}
+                            {...register("image", { required: true })}
                             className="w-full mt-2 border border-gray-300 rounded-lg px-4 py-2 focus:outline-primary-content bg-base-100 file-input file-input-bordered"
                         />
                         {
-                            errors.photo?.type === "required" && <p className='text-xs text-red-500 mt-2'>Upload Image is required</p>
+                            errors.image?.type === "required" && <p className='text-xs text-red-500 mt-2'>Upload Image is required</p>
                         }
                     </div>
 
@@ -302,7 +321,8 @@ const AddTickets = () => {
                                 readOnly
                                 {...register("vendorName")}
                                 className="w-full mt-2 border border-gray-300 rounded-lg px-4 py-2 focus:outline-primary-content bg-base-100"
-                                value="Your Name"
+                                defaultValue={user?.displayName}
+                                placeholder="Your Name"
                             />
                         </div>
 
@@ -312,7 +332,8 @@ const AddTickets = () => {
                                 readOnly
                                 {...register("vendorEmail")}
                                 className="w-full mt-2 border border-gray-300 rounded-lg px-4 py-2 focus:outline-primary-content bg-base-100"
-                                value="vendor@email.com"
+                                defaultValue={user?.email}
+                                placeholder="Your email"
                             />
                         </div>
                     </div>
