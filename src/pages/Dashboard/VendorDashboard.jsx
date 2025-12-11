@@ -65,11 +65,11 @@ const VendorDashboard = () => {
 
                             {/* Vendor Profile */}
                             <li>
-                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Vendor Profile">
+                                <Link to={`/dashboard/vendor-profile`} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Vendor Profile">
                                     {/* Profile icon */}
                                     <FaRegUserCircle className='size-4 my-1.5 inline-block' />
                                     <span className="is-drawer-close:hidden">Vendor Profile</span>
-                                </button>
+                                </Link>
                             </li>
 
                             {/* Add Ticket */}

@@ -10,6 +10,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import TicketsDetailsPage from "../pages/All_Tickets/TicketsDetailsPage";
 import AddTickets from "../pages/VendorDashboard/AddTickets";
 import DashboardLayout from "../layouts/DashboardLayout";
+import VendorProfile from "../pages/VendorDashboard/VendorProfile";
 
 export const router = createBrowserRouter([
     {
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
             },
 
             {
-                path: "ticket-details/1",
+                path: "ticket-details/:id",
                 element: <PrivateRoute><TicketsDetailsPage></TicketsDetailsPage></PrivateRoute>
             }
         ]
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
             {
                 path: "add-tickets",
                 element: <PrivateRoute><AddTickets></AddTickets></PrivateRoute>
+            },
+            {
+                path: "vendor-profile",
+                element: <VendorProfile></VendorProfile>
             }
         ]
     }

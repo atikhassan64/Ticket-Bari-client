@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import Loading from '../../components/sheard/loading/Loading';
 
 const AllTickets = () => {
-     const axiosSecure = useAxiosSecure();
+    const axiosSecure = useAxiosSecure();
 
     const { data: tickets = [], isLoading } = useQuery({
         queryKey: ["tickets"],
@@ -23,10 +23,10 @@ const AllTickets = () => {
             <div className='max-w-[1200px] mx-auto'>
                 <h2 className="text-3xl font-bold mb-4">All Tickets</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {tickets.map(ticket => (
-                            <AdminApprovedCard key={ticket._id} ticket={ticket} />
-                        ))}
-                    </div>
+                    {tickets.map(ticket => (
+                        <AdminApprovedCard key={ticket._id} ticket={ticket} />
+                    ))}
+                </div>
             </div>
         </div>
     );
