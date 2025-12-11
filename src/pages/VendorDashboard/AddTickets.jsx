@@ -152,7 +152,39 @@ const AddTickets = () => {
     const { user } = useAuth();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
+    // const handleAddTickets = (data) => {
+    //     const uploadPhoto = data.image[0];
+    //     const formData = new FormData();
+    //     formData.append("image", uploadPhoto);
+    //     const photo_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_photo_host}`
+    //     axios.post(photo_API_URL, formData)
+    //         .then(res => {
+    //             const imageURL = res.data.data.url;
+    //             const ticket = {
+    //                 ...data,
+    //                 image: imageURL,
+    //                 status: "pending",
+    //             }
+    //             // console.log("final data : ", ticket)
+    //             axiosSecure.post("/tickets", ticket)
+    //                 .then(res => {
+    //                     console.log("to Database: ", res.data)
+    //                 })
+    //         })
+    //     reset()
+    // };
+
     const handleAddTickets = (data) => {
+
+        // ⭐ ADD THIS (1)
+        const convertToAMPM = new Date(data.departure).toLocaleString("en-US", {
+            dateStyle: "medium",
+            timeStyle: "short",
+            hour12: true
+        });
+
+        data.departure = convertToAMPM; // ⭐ ADD THIS (2)
+
         const uploadPhoto = data.image[0];
         const formData = new FormData();
         formData.append("image", uploadPhoto);
@@ -165,7 +197,8 @@ const AddTickets = () => {
                     image: imageURL,
                     status: "pending",
                 }
-                // console.log("final data : ", ticket)
+
+                // ⭐ This now saves AM/PM format
                 axiosSecure.post("/tickets", ticket)
                     .then(res => {
                         console.log("to Database: ", res.data)
