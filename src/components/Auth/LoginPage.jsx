@@ -5,6 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import { FcGoogle } from 'react-icons/fc';
 import Marquee from 'react-fast-marquee';
 import toast from 'react-hot-toast';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const images = [
     {
@@ -30,6 +31,7 @@ const LoginPage = () => {
     } = useForm();
     const { logInUser, logInWithGoogle, setUser } = useAuth();
     const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure();
     const emailRef = useRef("");
     const location = useLocation();
 
@@ -53,7 +55,18 @@ const LoginPage = () => {
                 const user = result.user;
                 toast.success("Login Successfully")
                 setUser(user);
-                navigate(location?.state || '/')
+
+                const userInfo = {
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                }
+
+                axiosSecure.post("/users", userInfo)
+                    .then(res => {
+                        console.log("google data is login to database:", res.data)
+                        navigate(location?.state || '/');
+                    })
             })
             .catch(error => {
                 toast.error(error.message)

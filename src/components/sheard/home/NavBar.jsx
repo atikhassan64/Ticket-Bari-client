@@ -114,7 +114,7 @@ const Navbar = () => {
                             <div tabIndex={0} role="button" className="flex items-center gap-2 cursor-pointer">
                                 <img
                                     src={user?.photoURL}
-                                    className="w-10 h-10 rounded-full border"
+                                    className="w-10 h-10 rounded-full border object-cover"
                                     alt="avatar"
                                 />
                                 <span className="font-medium">{user?.displayName}</span>

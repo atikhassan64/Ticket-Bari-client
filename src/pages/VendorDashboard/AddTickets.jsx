@@ -183,7 +183,7 @@ const AddTickets = () => {
             hour12: true
         });
 
-        data.departure = convertToAMPM; // ⭐ ADD THIS (2)
+        data.departure = convertToAMPM;
 
         const uploadPhoto = data.image[0];
         const formData = new FormData();
@@ -198,7 +198,7 @@ const AddTickets = () => {
                     status: "pending",
                 }
 
-                // ⭐ This now saves AM/PM format
+             
                 axiosSecure.post("/tickets", ticket)
                     .then(res => {
                         console.log("to Database: ", res.data)

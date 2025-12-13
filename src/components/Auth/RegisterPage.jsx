@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 
 const images = [
@@ -26,6 +27,7 @@ const RegisterPage = () => {
     const { createUser, logInWithGoogle, updateUser, setUser } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const axiosSecure = useAxiosSecure();
     const {
         register,
         handleSubmit,
@@ -36,6 +38,19 @@ const RegisterPage = () => {
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
+
+                const userInfo = {
+                    email: data.email,
+                    displayName: data.name,
+                    photoURL: data.photoURL
+                }
+                axiosSecure.post("/users", userInfo)
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            console.log("Data goes to Database")
+                        }
+                    })
+
                 updateUser({ displayName: data.name, photoURL: data.photoURL })
                     .then(() => {
                         setUser({ ...user, displayName: data.name, photoURL: data.photoURL });
@@ -58,7 +73,19 @@ const RegisterPage = () => {
                 const user = result.user;
                 setUser(user);
                 toast.success("Registration is Successfully")
-                navigate(location?.state || '/');
+
+                const userInfo = {
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                }
+
+                axiosSecure.post("/users", userInfo)
+                    .then(res => {
+                        console.log("google data is login to database:", res.data)
+                        navigate(location?.state || '/');
+                    })
+
             })
             .catch(error => {
                 console.log(error)
