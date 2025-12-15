@@ -46,15 +46,16 @@ const MyBookedTickets = () => {
     // payment 
     const handlePayment = async (ticket) => {
         const paymentInfo = {
-            ticketId: ticket.ticketId || ticket._id,
+            ticketId: ticket._id,
             ticketTitle: ticket.title,
             bookingQty: ticket.bookingQty,
-            totalPrice: ticket.totalPrice,
+            totalPrice: ticket.unitPrice,
             userEmail: user.email
         };
 
         const res = await axiosSecure.post("/payment", paymentInfo);
 
+// console.log(res.data.url)
         window.location.assign(res.data.url);
     }
 
