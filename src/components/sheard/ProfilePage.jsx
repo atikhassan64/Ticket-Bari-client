@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import Loading from './loading/Loading';
 
 const ProfilePage = () => {
     const { user } = useAuth();
-    const fullName = user?.displayName || "";
+    const axiosSecure = useAxiosSecure();
+
+    const { data: dbUser = {}, isLoading } = useQuery({
+        queryKey: ["user", user?.email],
+         enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users/${user.email}`);
+            return res.data;
+        }
+    })
+
+    // console.log(dbUser)
+
+    const fullName = dbUser?.displayName || "";
     const nameParts = fullName.split(" ");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    if(isLoading){
+        return <Loading></Loading>
+    }
 
     return (
         <div>
@@ -20,13 +40,13 @@ const ProfilePage = () => {
                 {/* Profile Card */}
                 <div className="flex items-center gap-4 bg-base-200 shadow rounded-lg p-6 mb-6">
                     <img
-                        src={user.photoURL}
+                        src={dbUser.photoURL}
                         alt="Profile"
                         className="w-20 h-20 rounded-full object-cover"
                     />
                     <div>
-                        <h3 className="text-xl font-medium mb-2">{user?.displayName}</h3>
-                        <p className="text-gray-500">Admin</p>
+                        <h3 className="text-xl font-medium mb-2">{dbUser?.displayName}</h3>
+                        <p className="text-gray-500">{dbUser?.role}</p>
                     </div>
                 </div>
 
@@ -37,7 +57,7 @@ const ProfilePage = () => {
                         <button
                             onClick={openModal}
                             className="btn button">
-                             Edit
+                            Edit
                         </button>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -51,11 +71,11 @@ const ProfilePage = () => {
                         </div>
                         <div>
                             <p className="text-gray-500">Email Address</p>
-                            <p>{user?.email}</p>
+                            <p>{dbUser?.email}</p>
                         </div>
                         <div>
                             <p className="text-gray-500">User Role</p>
-                            <p>Admin</p>
+                            <p>{dbUser?.role}</p>
                         </div>
                     </div>
                 </div>
@@ -91,7 +111,7 @@ const ProfilePage = () => {
                                     <label className="text-gray-500 text-sm">Email Address</label>
                                     <input
                                         type="email"
-                                        defaultValue={user?.email || ""}
+                                        defaultValue={dbUser?.email || ""}
                                         className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
                                         disabled
                                     />

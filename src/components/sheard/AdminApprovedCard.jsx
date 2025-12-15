@@ -26,7 +26,7 @@ const AdminApprovedCard = ({ ticket }) => {
                                 <h3 className="text-xl font-bold mb-2 text-gray-800-content">{ticket.title}</h3>
 
                                 <p className="text-gray-500">
-                                    <span className="font-semibold">Price:</span> ৳{ticket.price}
+                                    <span className="font-semibold">Price:</span> ${ticket.price}
                                 </p>
 
                                 <p className="text-gray-500">

@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../../components/sheard/loading/Loading';
+import useAuth from '../../hooks/useAuth';
 
 const TicketsDetailsPage = () => {
+    // 🔴 ADD HERE (Book Now modal & quantity state)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [bookingQty, setBookingQty] = useState(1);
+    const { user } = useAuth();
+
     const { id } = useParams();
     const axiosSecure = useAxiosSecure();
 
@@ -15,6 +21,8 @@ const TicketsDetailsPage = () => {
             return res.data;
         }
     });
+
+    // console.log(ticket)
 
     const [countdown, setCountdown] = useState({
         days: 0,
@@ -46,11 +54,86 @@ const TicketsDetailsPage = () => {
         return () => clearInterval(interval);
     }, [ticket.departure]);
 
+    // 🔴 ADD HERE (disable condition)
+    const isExpired = new Date(ticket.departure) - new Date() <= 0;
+    const isOutOfStock = ticket.quantity === 0;
+
+    const handleConfirm = () => {
+
+        const bookedTicket = {
+            ticketId: ticket._id,
+            title: ticket.title,
+            image: ticket.image,
+            from: ticket.from,
+            to: ticket.to,
+            departure: ticket.departure,
+            unitPrice: ticket.price,
+            bookingQty: bookingQty,
+            totalPrice: ticket.price * bookingQty,
+            userEmail: user.email,
+            userName: user.displayName
+        };
+
+        axiosSecure.post("/ticket-booked", bookedTicket)
+            .then(res => {
+                console.log("booked data goes to database : ", res.data);
+                setIsModalOpen(false);
+            })
+
+
+    }
+
     if (isLoading) {
         return <Loading></Loading>
     }
     return (
         <div className='py-12 bg-base-300'>
+            {/* 🔴 ADD HERE (Booking Modal) */}
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+                    <div className="bg-base-100 p-6 rounded-lg shadow-2xl w-full max-w-md">
+                        <h2 className="text-xl font-bold mb-4">Book Ticket</h2>
+
+                        <label className="block mb-2 font-medium">
+                            Booking Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            min={1}
+                            max={ticket.quantity}
+                            value={bookingQty}
+                            onChange={(e) => setBookingQty(Number(e.target.value))}
+                            className="w-full mb-3 border rounded-lg px-4 py-2 focus:outline-primary-content"
+                        />
+
+                        {/* Validation message */}
+                        {bookingQty > ticket.quantity && (
+                            <p className="text-red-500 text-sm mb-2">
+                                Quantity cannot be greater than available tickets
+                            </p>
+                        )}
+
+                        <div className="flex justify-end gap-3 mt-4">
+                            <button
+                                className="btn btn-ghost"
+                                onClick={() => setIsModalOpen(false)}
+                            >
+                                Cancel
+                            </button>
+
+                            <Link to={`/dashboard/my-booked-tickets`}
+                                className="btn button"
+                                disabled={bookingQty > ticket.quantity}
+                                onClick={handleConfirm}
+                            >
+                                Confirm Booking
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="max-w-4xl mx-auto p-6 bg-base-100 shadow-lg rounded-lg">
                 {/* Ticket Image */}
                 <div className="w-full h-64 overflow-hidden rounded-lg mb-6">
@@ -137,67 +220,25 @@ const TicketsDetailsPage = () => {
                 </div>
 
                 {/* Book Now Button */}
-                <button
+                {/* <button
                     className="w-full md:w-auto btn button px-6 py-3 rounded-lg disabled:bg-gray-400"
                     disabled={false}
                 >
                     Book Now
-                </button>
-            </div>
+                </button> */}
 
+                {/* 🔴 MODIFY HERE */}
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full md:w-auto btn button px-6 py-3 rounded-lg disabled:bg-gray-400"
+                    disabled={isExpired || isOutOfStock}
+                >
+                    Book Now
+                </button>
+
+            </div>
         </div>
     );
 };
 
 export default TicketsDetailsPage;
-
-// import React from 'react';
-// import { useParams } from 'react-router';
-// import useAxiosSecure from '../../hooks/useAxiosSecure';
-// import { useQuery } from '@tanstack/react-query';
-// import Loading from '../../components/sheard/loading/Loading';
-
-// const TicketsDetailsPage = () => {
-//     const { id } = useParams();
-//     const axiosSecure = useAxiosSecure();
-
-//     const { data: ticket = {}, isLoading } = useQuery({
-//         queryKey: ["ticket", id],
-//         queryFn: async () => {
-//             const res = await axiosSecure.get(`/tickets/${id}`);
-//             return res.data;
-//         }
-//     });
-
-//     if (isLoading) return <Loading />;
-
-//     return (
-//         <div className='py-12 bg-base-300'>
-//             <div className="max-w-4xl mx-auto p-6 bg-base-100 shadow-lg rounded-lg">
-
-//                 <div className="w-full h-64 overflow-hidden rounded-lg mb-6">
-//                     <img src={ticket.image} className="w-full h-full object-cover" />
-//                 </div>
-
-//                 <h1 className="text-3xl font-bold mb-4">{ticket.title}</h1>
-
-//                 <div className="text-lg mb-4">
-//                     <span className="font-semibold">From:</span> {ticket.from} →
-//                     <span className="font-semibold ml-2">To:</span> {ticket.to}
-//                 </div>
-
-//                 <p className="text-lg"><span className="font-semibold">Price:</span> ৳{ticket.price}</p>
-//                 <p className="text-lg"><span className="font-semibold">Available Tickets:</span> {ticket.quantity}</p>
-
-//                 <p className="text-lg mt-4">
-//                     <span className="font-semibold">Departure:</span> {ticket.departure}
-//                 </p>
-
-//                 <button className="btn button w-full mt-6">Book Now</button>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default TicketsDetailsPage;
-

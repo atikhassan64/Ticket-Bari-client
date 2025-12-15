@@ -5,9 +5,15 @@ import { MdBookmarkAdded, MdHistory, MdAssignmentTurnedIn, MdOutlineAnalytics } 
 import { VscDiffAdded } from "react-icons/vsc";
 import logo from "../assets/logo.png";
 import logoWhite from "../assets/logo-white.png";
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import Loading from '../components/sheard/loading/Loading';
+import useAuth from '../hooks/useAuth';
 
 const DashboardLayout = () => {
+    const { user } = useAuth();
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+    const axiosSecure = useAxiosSecure();
 
     useEffect(() => {
         const savedTheme = localStorage.getItem("theme") || "light";
@@ -22,8 +28,22 @@ const DashboardLayout = () => {
         return () => clearInterval(interval);
     }, [theme]);
 
-    // 🔑 role (পরে auth/context থেকে আনবে)
-    const role = "user"; // user | vendor | admin
+
+
+    // user profile data
+    const { data: dbUser = {}, isLoading } = useQuery({
+        queryKey: ["user", user?.email],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users/${user.email}`);
+            return res.data;
+        }
+    })
+    
+    const role = dbUser?.role;
+
+    if (isLoading) {
+        return <Loading></Loading>
+    }
 
     return (
         <div className="drawer lg:drawer-open">
@@ -88,20 +108,20 @@ const DashboardLayout = () => {
                             </NavLink>
                         </li>
 
+                        <li>
+                            <NavLink
+                                to={`profile`}
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="User Profile"
+                            >
+                                <FaRegUserCircle className="size-4 my-1.5 inline-block" />
+                                <span className="is-drawer-close:hidden">Profile</span>
+                            </NavLink>
+                        </li>
+
                         {/* ---------- USER ---------- */}
                         {role === "user" && (
                             <>
-                                <li>
-                                    <NavLink
-                                        to="user-profile"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="User Profile"
-                                    >
-                                        <FaRegUserCircle className="size-4 my-1.5 inline-block" />
-                                        <span className="is-drawer-close:hidden">User Profile</span>
-                                    </NavLink>
-                                </li>
-
                                 <li>
                                     <NavLink
                                         to="my-booked-tickets"
@@ -129,15 +149,6 @@ const DashboardLayout = () => {
                         {/* ---------- VENDOR ---------- */}
                         {role === "vendor" && (
                             <>
-                                <li>
-                                    <NavLink to="vendor-profile"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Vendor Profile">
-                                        <FaRegUserCircle className="size-4 my-1.5 inline-block" />
-                                        <span className="is-drawer-close:hidden">Vendor Profile</span>
-                                    </NavLink>
-                                </li>
-
                                 <li>
                                     <NavLink to="add-tickets"
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"

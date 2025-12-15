@@ -128,7 +128,7 @@ const Navbar = () => {
                                 className="dropdown-content menu p-4 shadow-lg bg-base-100 rounded-lg w-52 z-10"
                             >
                                 <li>
-                                    <Link to="/profile">
+                                    <Link to="/dashboard/profile">
                                         <i className="fa-regular fa-user"></i> Profile
                                     </Link>
                                 </li>
