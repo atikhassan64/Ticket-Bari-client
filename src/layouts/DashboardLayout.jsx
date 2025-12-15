@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { FaRegUserCircle, FaTicketAlt } from 'react-icons/fa';
-import { MdBookmarkAdded, MdHistory, MdAssignmentTurnedIn, MdOutlineAnalytics } from "react-icons/md";
+import { FaRegUserCircle, FaTicketAlt, FaUsersCog } from 'react-icons/fa';
+import { MdBookmarkAdded, MdHistory, MdAssignmentTurnedIn, MdOutlineAnalytics, MdCampaign, MdConfirmationNumber } from "react-icons/md";
 import { VscDiffAdded } from "react-icons/vsc";
 import logo from "../assets/logo.png";
 import logoWhite from "../assets/logo-white.png";
@@ -38,9 +38,8 @@ const DashboardLayout = () => {
             return res.data;
         }
     })
-    
+
     const role = dbUser?.role;
-    // const role = "vendor"
 
     if (isLoading) {
         return <Loading></Loading>
@@ -113,7 +112,7 @@ const DashboardLayout = () => {
                             <NavLink
                                 to={`profile`}
                                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                data-tip="User Profile"
+                                data-tip="Profile"
                             >
                                 <FaRegUserCircle className="size-4 my-1.5 inline-block" />
                                 <span className="is-drawer-close:hidden">Profile</span>
@@ -183,6 +182,37 @@ const DashboardLayout = () => {
                                         data-tip="Revenue Overview">
                                         <MdOutlineAnalytics className="size-4 my-1.5 inline-block" />
                                         <span className="is-drawer-close:hidden">Revenue Overview</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
+                        {/* ---------- VENDOR ---------- */}
+                        {role === "admin" && (
+                            <>
+                                <li>
+                                    <NavLink to="manage-tickets"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Manage Tickets">
+                                        <MdConfirmationNumber className="size-4 my-1.5 inline-block" />
+                                        <span className="is-drawer-close:hidden">Manage Tickets</span>
+                                    </NavLink>
+                                </li>
+
+                                <li>
+                                    <NavLink to="manage-users"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Manage Users">
+                                        <FaUsersCog className="size-4 my-1.5 inline-block" />
+                                        <span className="is-drawer-close:hidden">Manage Users</span>
+                                    </NavLink>
+                                </li>
+
+                                <li>
+                                    <NavLink to="advertise-tickets"
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Advertise Tickets">
+                                        <MdCampaign className="size-4 my-1.5 inline-block" />
+                                        <span className="is-drawer-close:hidden">Advertise Tickets</span>
                                     </NavLink>
                                 </li>
                             </>

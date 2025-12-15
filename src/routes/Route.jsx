@@ -17,6 +17,9 @@ import TransactionHistory from "../pages/UserDashboard/TransactionHistory";
 import RequestedBookings from "../pages/VendorDashboard/RequestedBookings";
 import PaymentSuccess from "../components/payment/PaymentSuccess";
 import PaymentCancelled from "../components/payment/PaymentCancelled";
+import ManageTickets from "../pages/AdminDashboard/ManageTickets";
+import ManageUsers from "../pages/AdminDashboard/ManageUsers";
+import AdvertiseTickets from "../pages/AdminDashboard/AdvertiseTickets";
 
 export const router = createBrowserRouter([
     {
@@ -67,6 +70,7 @@ export const router = createBrowserRouter([
                 path: "transaction-history",
                 element: <TransactionHistory></TransactionHistory>
             },
+            // vendor
             {
                 path: "add-tickets",
                 element: <AddTickets />
@@ -86,6 +90,19 @@ export const router = createBrowserRouter([
             {
                 path: "payment-cancelled",
                 element: <PaymentCancelled></PaymentCancelled>
+            },
+            // admin
+            {
+                path: "manage-tickets",
+                element: <ManageTickets></ManageTickets>
+            },
+            {
+                path: "manage-users",
+                element: <ManageUsers></ManageUsers>
+            },
+            {
+                path: "advertise-tickets",
+                element: <AdvertiseTickets></AdvertiseTickets>
             }
         ]
     }
