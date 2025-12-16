@@ -6,7 +6,6 @@ import RegisterPage from "../components/Auth/RegisterPage";
 import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 import PrivateRoute from "./PrivateRoute";
 import AllTickets from "../pages/All_Tickets/AllTickets";
-import Dashboard from "../pages/Dashboard/Dashboard";
 import TicketsDetailsPage from "../pages/All_Tickets/TicketsDetailsPage";
 import AddTickets from "../pages/VendorDashboard/AddTickets";
 import DashboardLayout from "../layouts/DashboardLayout";

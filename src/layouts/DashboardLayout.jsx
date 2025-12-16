@@ -9,6 +9,7 @@ import useAxiosSecure from '../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../components/sheard/loading/Loading';
 import useAuth from '../hooks/useAuth';
+import { Toaster } from 'react-hot-toast';
 
 const DashboardLayout = () => {
     const { user } = useAuth();
@@ -220,6 +221,32 @@ const DashboardLayout = () => {
                     </ul>
                 </div>
             </div>
+
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                toasterId="default"
+                toastOptions={{
+                    className: '',
+                    duration: 2000,
+                    removeDelay: 1000,
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                    },
+
+                    success: {
+                        duration: 3000,
+                        iconTheme: {
+                            primary: 'green',
+                            secondary: 'black',
+                        },
+                    },
+                }}
+            />
         </div>
     );
 };

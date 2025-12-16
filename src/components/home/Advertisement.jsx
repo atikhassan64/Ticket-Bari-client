@@ -8,9 +8,9 @@ const Advertisement = () => {
     const axiosSecure = useAxiosSecure();
 
     const { data: tickets = [], isLoading } = useQuery({
-        queryKey: ["tickets"],
+        queryKey: ["advertisedTickets"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/tickets/advertise");
+            const res = await axiosSecure.get(`/tickets/advertise`);
             return res.data;
         }
     })

@@ -156,7 +156,7 @@ const AddTickets = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     // 🔹 Get DB user info (Fraud check)
-    const { data: dbUser = {}, isLoading } = useQuery({
+    const { data: dbUser = {}, isLoading, } = useQuery({
         queryKey: ["dbUser", user?.email],
         enabled: !!user?.email,
         queryFn: async () => {
@@ -200,11 +200,11 @@ const AddTickets = () => {
 
 
                 axiosSecure.post("/tickets", ticket)
-                    .then(res => {
-                        console.log("to Database: ", res.data)
+                    .then(() => {
+                        toast.success("Ticket added successfully. Waiting for admin approval.");
+                        reset()
                     })
             })
-        reset()
     };
 
 
