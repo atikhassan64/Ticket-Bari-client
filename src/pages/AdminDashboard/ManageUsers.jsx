@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FaUserShield, FaStore, FaBan } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -17,30 +18,92 @@ const ManageUsers = () => {
 
     // 🔹 Make Admin
     const handleMakeAdmin = async (user) => {
-        const res = await axiosSecure.patch(`/users/admin/${user._id}`);
-        if (res.data.modifiedCount > 0) {
-            toast.success(`${user.name} is now Admin`);
-            refetch();
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This user will get full admin access to the system.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#2563eb",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, Make Admin",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axiosSecure.patch(`/users/admin/${user._id}`);
+
+                if (res.data.modifiedCount > 0) {
+                    toast.success(`${user.displayName} is now an Admin`);
+                    refetch();
+
+                    Swal.fire({
+                        title: "Success!",
+                        text: "User has been promoted to Admin.",
+                        icon: "success",
+                    });
+                }
+            }
+        });
     };
+
 
     // 🔹 Make Vendor
     const handleMakeVendor = async (user) => {
-        const res = await axiosSecure.patch(`/users/vendor/${user._id}`);
-        if (res.data.modifiedCount > 0) {
-            toast.success(`${user.name} is now Vendor`);
-            refetch();
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This user will be promoted to Vendor and can add tickets.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#16a34a",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, Make Vendor",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axiosSecure.patch(`/users/vendor/${user._id}`);
+
+                if (res.data.modifiedCount > 0) {
+                    toast.success(`${user.displayName} is now a Vendor`);
+                    refetch();
+
+                    Swal.fire({
+                        title: "Success!",
+                        text: "User role has been updated to Vendor.",
+                        icon: "success",
+                    });
+                }
+            }
+        });
     };
+
 
     // 🔹 Mark Vendor as Fraud
     const handleFraud = async (user) => {
-        const res = await axiosSecure.patch(`/users/fraud/${user._id}`);
-        if (res.data.modifiedCount > 0) {
-            toast.error(`${user.name} marked as Fraud`);
-            refetch();
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This vendor will be marked as fraud and cannot add tickets anymore!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, Mark as Fraud",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axiosSecure.patch(`/users/fraud/${user._id}`);
+
+                if (res.data?.success) {
+                    toast.error(`${user.displayName} marked as Fraud`);
+                    refetch();
+
+                    Swal.fire({
+                        title: "Marked as Fraud!",
+                        text: "This vendor is now blocked from adding tickets.",
+                        icon: "success",
+                    });
+                }
+            }
+        });
     };
+
+
+
 
     return (
         <div className="p-6">
@@ -64,21 +127,27 @@ const ManageUsers = () => {
                                 <td className="font-semibold">{user.displayName}</td>
                                 <td>{user.email}</td>
                                 <td>
-                                    <span className={`badge ${user.role === "admin"
+                                    <div className="flex gap-2 items-center">
+                                        <span className={`badge ${user.role === "admin"
                                             ? "badge-success"
                                             : user.role === "vendor"
                                                 ? "badge-info"
                                                 : "badge-ghost"
-                                        }`}>
-                                        {user.role}
-                                    </span>
+                                            }`}>
+                                            {user.role}
+                                        </span>
+
+                                        {user.isFraud && (
+                                            <span className="badge badge-error">Fraud</span>
+                                        )}
+                                    </div>
                                 </td>
 
                                 <td className="flex flex-wrap gap-2">
                                     {/* Make Admin */}
                                     <button
                                         onClick={() => handleMakeAdmin(user)}
-                                        disabled={user.role === "admin"}
+                                        disabled={user.role === "admin" || user.isFraud}
                                         className="btn btn-xs btn-success flex gap-1"
                                     >
                                         <FaUserShield /> Admin
@@ -87,19 +156,22 @@ const ManageUsers = () => {
                                     {/* Make Vendor */}
                                     <button
                                         onClick={() => handleMakeVendor(user)}
-                                        disabled={user.role === "vendor"}
+                                        disabled={user.role === "vendor" || user.isFraud}
                                         className="btn btn-xs btn-info flex gap-1"
                                     >
                                         <FaStore /> Vendor
                                     </button>
 
                                     {/* Mark as Fraud (only for vendor) */}
+                                    {/* Mark as Fraud (only for vendor) */}
                                     {user.role === "vendor" && (
                                         <button
                                             onClick={() => handleFraud(user)}
-                                            className="btn btn-xs btn-error flex gap-1"
+                                            disabled={user.isFraud}
+                                            className={`btn btn-xs flex gap-1 ${user.isFraud ? "btn-disabled" : "btn-error"
+                                                }`}
                                         >
-                                            <FaBan /> Fraud
+                                            <FaBan /> {user.isFraud ? "Fraud" : "Mark Fraud"}
                                         </button>
                                     )}
                                 </td>

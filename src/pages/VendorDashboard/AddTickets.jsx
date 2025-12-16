@@ -141,41 +141,40 @@
 
 // export default AddTickets;
 
-import axios from "axios";
 import React from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../components/sheard/loading/Loading";
+import toast from "react-hot-toast";
 
 const AddTickets = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-    // const handleAddTickets = (data) => {
-    //     const uploadPhoto = data.image[0];
-    //     const formData = new FormData();
-    //     formData.append("image", uploadPhoto);
-    //     const photo_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_photo_host}`
-    //     axios.post(photo_API_URL, formData)
-    //         .then(res => {
-    //             const imageURL = res.data.data.url;
-    //             const ticket = {
-    //                 ...data,
-    //                 image: imageURL,
-    //                 status: "pending",
-    //             }
-    //             // console.log("final data : ", ticket)
-    //             axiosSecure.post("/tickets", ticket)
-    //                 .then(res => {
-    //                     console.log("to Database: ", res.data)
-    //                 })
-    //         })
-    //     reset()
-    // };
+    // 🔹 Get DB user info (Fraud check)
+    const { data: dbUser = {}, isLoading } = useQuery({
+        queryKey: ["dbUser", user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users/${user.email}`);
+            return res.data;
+        }
+    });
+
+    if (isLoading) {
+        return <Loading></Loading>;
+    }
+
+    if (dbUser?.isFraud) {
+        toast.error("You are marked as fraud. You cannot add tickets.");
+        return;
+    }
 
     const handleAddTickets = (data) => {
-
         // ⭐ ADD THIS (1)
         const convertToAMPM = new Date(data.departure).toLocaleString("en-US", {
             dateStyle: "medium",
@@ -195,10 +194,11 @@ const AddTickets = () => {
                 const ticket = {
                     ...data,
                     image: imageURL,
+                    adminStatus: "pending",
                     status: "pending",
                 }
 
-             
+
                 axiosSecure.post("/tickets", ticket)
                     .then(res => {
                         console.log("to Database: ", res.data)
@@ -206,6 +206,8 @@ const AddTickets = () => {
             })
         reset()
     };
+
+
 
     return (
         <div className='p-6 mx-auto'>
@@ -372,9 +374,14 @@ const AddTickets = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <button type="submit" className="btn button w-full mt-4 py-3 text-lg">
-                        Add Ticket
+                    <button
+                        type="submit"
+                        disabled={dbUser?.isFraud}
+                        className="btn button w-full mt-4 py-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {dbUser?.isFraud ? "Fraud Vendor - Cannot Add Ticket" : "Add Ticket"}
                     </button>
+
                 </form>
             </div>
         </div>

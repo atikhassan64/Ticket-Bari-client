@@ -15,6 +15,8 @@ const AllTickets = () => {
         }
     })
 
+    console.log(tickets)
+
     if (isLoading) {
         return <Loading></Loading>
     }

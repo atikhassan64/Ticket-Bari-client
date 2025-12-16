@@ -9,7 +9,7 @@ const ManageTickets = () => {
     const { data: tickets = [], refetch } = useQuery({
         queryKey: ["tickets"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/tickets")
+            const res = await axiosSecure.get("/tickets/admin")
             return res.data
         }
     })
@@ -17,15 +17,16 @@ const ManageTickets = () => {
 
     const handleApprove = async (ticket) => {
         await axiosSecure.patch(`/tickets/approved/${ticket._id}`, {
-            status: "approved",
+            adminStatus: "approved",
         });
         refetch();
     };
 
     const handleReject = async (ticket) => {
         await axiosSecure.patch(`/tickets/rejected/${ticket._id}`, {
-            status: "rejected"
+            adminStatus: "rejected"
         });
+        refetch();
     };
 
 
@@ -59,7 +60,11 @@ const ManageTickets = () => {
                                 <td>৳ {ticket.price}</td>
                                 <td>{ticket.vendorEmail}</td>
                                 <td>
-                                    <span className="badge badge-warning">{ticket.status}</span>
+                                    <span className={ticket.adminStatus === "approved" 
+                                    ? "badge badge-success"
+                                    : ticket.adminStatus === "rejected"
+                                    ? "badge badge-error"
+                                    : "badge badge-warning"}>{ticket.adminStatus}</span>
                                 </td>
                                 {/* <td className="flex gap-2">
                                     <button
@@ -78,7 +83,7 @@ const ManageTickets = () => {
                                 <td>
                                     <div className="flex gap-2">
                                         <button
-                                            disabled={ticket.status === "approved"}
+                                            disabled={ticket.adminStatus === "approved"}
                                             onClick={() => handleApprove(ticket)}
                                             className="btn btn-xs btn-success flex gap-1 disabled:opacity-50"
                                         >
@@ -86,7 +91,7 @@ const ManageTickets = () => {
                                         </button>
 
                                         <button
-                                            disabled={ticket.status === "rejected"}
+                                            disabled={ticket.adminStatus === "rejected"}
                                             onClick={() => handleReject(ticket)}
                                             className="btn btn-xs btn-error flex gap-1 disabled:opacity-50"
                                         >
