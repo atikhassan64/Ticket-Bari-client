@@ -3,159 +3,167 @@ import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import Loading from './loading/Loading';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    const { data: dbUser = {}, isLoading } = useQuery({
+
+    const { data: dbUser = {}, isLoading, refetch } = useQuery({
         queryKey: ["user", user?.email],
-         enabled: !!user?.email,
+        enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosSecure.get(`/users/${user.email}`);
             return res.data;
         }
-    })
-
-    // console.log(dbUser)
+    });
 
     const fullName = dbUser?.displayName || "";
     const nameParts = fullName.split(" ");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [firstName, setFirstName] = useState(nameParts[0] || "");
+    const [lastName, setLastName] = useState(nameParts[1] || "");
+    const [imageFile, setImageFile] = useState(null);
+
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    if(isLoading){
-        return <Loading></Loading>
+    if (isLoading) {
+        return <Loading />;
     }
 
+    const handleSaveProfile = (e) => {
+        e.preventDefault();
+
+        const displayName = `${firstName} ${lastName}`;
+
+        if (imageFile) {
+            const formData = new FormData();
+            formData.append("image", imageFile);
+
+            const photo_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_photo_host}`;
+
+            axios.post(photo_API_URL, formData)
+                .then(res => {
+                    const imageURL = res.data.data.url;
+                    updateProfileData(displayName, imageURL);
+                });
+        } else {
+            updateProfileData(displayName, dbUser.photoURL);
+        }
+    };
+
+    const updateProfileData = async (displayName, photoURL) => {
+        await updateUser(displayName, photoURL);
+        await axiosSecure.patch(`/users/profile/${user.email}`, {
+            displayName,
+            photoURL
+        });
+
+        toast.success("Profile updated successfully");
+        refetch();
+        closeModal();
+    };
+
     return (
-        <div>
-            <div className="p-6 mx-auto bg-base-100">
-                {/* Header */}
-                <h2 className="text-2xl font-semibold mb-6">My Profile</h2>
+        <div className="p-6 mx-auto bg-base-100">
+            <h2 className="text-2xl font-semibold mb-6">My Profile</h2>
 
-                {/* Profile Card */}
-                <div className="flex items-center gap-4 bg-base-200 shadow rounded-lg p-6 mb-6">
-                    <img
-                        src={dbUser.photoURL}
-                        alt="Profile"
-                        className="w-20 h-20 rounded-full object-cover"
-                    />
+            {/* Profile Card */}
+            <div className="flex items-center gap-4 bg-base-200 shadow rounded-lg p-6 mb-6">
+                <img
+                    src={dbUser.photoURL}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full object-cover"
+                />
+                <div>
+                    <h3 className="text-xl font-medium mb-2">{dbUser.displayName}</h3>
+                    <p className="text-gray-500">{dbUser.role}</p>
+                </div>
+            </div>
+
+            {/* Personal Information */}
+            <div className="bg-base-200 shadow rounded-lg p-6 mb-6">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold">Personal Information</h3>
+                    <button onClick={openModal} className="btn button">
+                        Edit
+                    </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <h3 className="text-xl font-medium mb-2">{dbUser?.displayName}</h3>
-                        <p className="text-gray-500">{dbUser?.role}</p>
+                        <p className="text-gray-500">First Name</p>
+                        <p>{nameParts[0]}</p>
+                    </div>
+                    <div>
+                        <p className="text-gray-500">Last Name</p>
+                        <p>{nameParts[1]}</p>
+                    </div>
+                    <div>
+                        <p className="text-gray-500">Email</p>
+                        <p>{dbUser.email}</p>
+                    </div>
+                    <div>
+                        <p className="text-gray-500">Role</p>
+                        <p>{dbUser.role}</p>
                     </div>
                 </div>
+            </div>
 
-                {/* Personal Information */}
-                <div className="bg-base-200 shadow rounded-lg p-6 mb-6">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold">Personal Information</h3>
+            {/* EDIT MODAL */}
+            {isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
+                    <div className="bg-base-100 rounded-lg shadow-lg p-6 w-96 relative">
                         <button
-                            onClick={openModal}
-                            className="btn button">
-                            Edit
+                            onClick={closeModal}
+                            className="absolute top-3 right-3 font-bold"
+                        >
+                            ✕
                         </button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <p className="text-gray-500">First Name</p>
-                            <p>{nameParts[0] || ""}</p>
-                        </div>
-                        <div>
-                            <p className="text-gray-500">Last Name</p>
-                            <p>{nameParts[1] || ""}</p>
-                        </div>
-                        <div>
-                            <p className="text-gray-500">Email Address</p>
-                            <p>{dbUser?.email}</p>
-                        </div>
-                        <div>
-                            <p className="text-gray-500">User Role</p>
-                            <p>{dbUser?.role}</p>
-                        </div>
-                    </div>
-                </div>
 
-                {isModalOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center  z-50">
-                        <div className="bg-base-100 rounded-lg shadow-lg p-6 w-96 relative">
-                            <button
-                                onClick={closeModal}
-                                className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 font-bold"
-                            >
-                                ✕
-                            </button>
-                            <h3 className="text-lg font-semibold mb-4">Edit Personal Information</h3>
+                        <h3 className="text-lg font-semibold mb-4">
+                            Edit Profile
+                        </h3>
+
+                        <form onSubmit={handleSaveProfile}>
                             <div className="grid grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label className="text-gray-500 text-sm">First Name</label>
-                                    <input
-                                        type="text"
-                                        defaultValue={nameParts[0] || ""}
-                                        className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-gray-500 text-sm">Last Name</label>
-                                    <input
-                                        type="text"
-                                        defaultValue={nameParts[1] || ""}
-                                        className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
-                                    />
-                                </div>
-                                <div className="col-span-2">
-                                    <label className="text-gray-500 text-sm">Email Address</label>
-                                    <input
-                                        type="email"
-                                        defaultValue={dbUser?.email || ""}
-                                        className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content"
-                                        disabled
-                                    />
-                                </div>
-                                <div className="col-span-2">
-                                    <label className="text-gray-500 text-sm">User Role</label>
-                                    <select className="w-full mb-2 border rounded-lg px-4 py-2 focus:outline-primary-content">
-                                        <option>Admin</option>
-                                        <option>User</option>
-                                    </select>
-                                </div>
+                                <input
+                                    type="text"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    placeholder="First Name"
+                                    className="w-full border rounded-lg px-4 py-2"
+                                />
+                                <input
+                                    type="text"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    placeholder="Last Name"
+                                    className="w-full border rounded-lg px-4 py-2"
+                                />
                             </div>
-                            <button className="button btn  px-4 py-2 rounded">
+
+                            <input
+                                type="file"
+                                onChange={(e) => setImageFile(e.target.files[0])}
+                                className="w-full border rounded-lg px-4 py-2 file-input file-input-bordered"
+                            />
+
+                            <button
+                                type="submit"
+                                className="btn button w-full mt-4"
+                            >
                                 Save Changes
                             </button>
-                        </div>
+                        </form>
                     </div>
-                )}
-
-
-                {/* Address Information */}
-                {/* <div className="bg-white shadow rounded-lg p-6">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold">Address</h3>
-                        <button className="flex items-center gap-1 text-white bg-orange-500 px-3 py-1 rounded hover:bg-orange-600">
-                            <FaEdit /> Edit
-                        </button>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4">
-                        <div>
-                            <p className="text-gray-500">Country</p>
-                            <p>United Kingdom</p>
-                        </div>
-                        <div>
-                            <p className="text-gray-500">City</p>
-                            <p>Leeds, East London</p>
-                        </div>
-                        <div>
-                            <p className="text-gray-500">Postal Code</p>
-                            <p>ERT 1254</p>
-                        </div>
-                    </div>
-                </div> */}
-            </div>
+                </div>
+            )}
         </div>
     );
 };
