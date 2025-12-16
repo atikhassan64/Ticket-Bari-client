@@ -192,6 +192,7 @@ const RequestedBookings = () => {
                                 <td className="px-6 py-4 text-center text-sm font-semibold text-gray-500">${booking.totalPrice}</td>
                                 <td className="px-6 py-4 text-center space-x-2">
                                     <button
+                                    disabled={booking.status === "accepted"}
                                         onClick={() => handleAccept(booking._id)}
                                         className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 cursor-pointer"
                                     >

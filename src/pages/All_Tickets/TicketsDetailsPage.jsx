@@ -71,7 +71,8 @@ const TicketsDetailsPage = () => {
             bookingQty: bookingQty,
             totalPrice: ticket.price * bookingQty,
             userEmail: user.email,
-            userName: user.displayName
+            userName: user.displayName,
+            vendorEmail: ticket.vendorEmail
         };
 
         axiosSecure.post("/ticket-booked", bookedTicket)
