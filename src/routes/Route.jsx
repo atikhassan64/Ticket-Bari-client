@@ -19,6 +19,7 @@ import PaymentCancelled from "../components/payment/PaymentCancelled";
 import ManageTickets from "../pages/AdminDashboard/ManageTickets";
 import ManageUsers from "../pages/AdminDashboard/ManageUsers";
 import AdvertiseTickets from "../pages/AdminDashboard/AdvertiseTickets";
+import UpdateTicket from "../pages/VendorDashboard/UpdateTicket";
 
 export const router = createBrowserRouter([
     {
@@ -89,6 +90,10 @@ export const router = createBrowserRouter([
             {
                 path: "payment-cancelled",
                 element: <PaymentCancelled></PaymentCancelled>
+            },
+            {
+                path: "update-ticket/:id",
+                element: <UpdateTicket></UpdateTicket>
             },
             // admin
             {

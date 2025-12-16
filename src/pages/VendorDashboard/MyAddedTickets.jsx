@@ -81,13 +81,15 @@ const MyAddedTickets = () => {
                                 {ticket.title}
                             </h3>
 
-                            <p className="text-gray-500">
-                                <span className="font-semibold">Price:</span> ৳{ticket.price}
-                            </p>
+                            <div className='flex justify-between items-end'>
+                                <p className="text-gray-500">
+                                    <span className="font-semibold">Price:</span> ${ticket.price}
+                                </p>
 
-                            <p className="text-gray-500">
-                                <span className="font-semibold">Quantity:</span> {ticket.quantity}
-                            </p>
+                                <p className="text-gray-500">
+                                    <span className="font-semibold">Quantity:</span> {ticket.quantity}
+                                </p>
+                            </div>
 
                             <p className="text-gray-500">
                                 <span className="font-semibold">Transport:</span> {ticket.transport}
@@ -101,38 +103,40 @@ const MyAddedTickets = () => {
                                 <span className="font-semibold">Departure:</span> {ticket.departure}
                             </p>
 
-                            {/* Perks */}
-                            {ticket?.perks?.length > 0 && (
-                                <p className="text-gray-500">
-                                    <span className="font-semibold">Perks:</span> {ticket.perks.join(", ")}
-                                </p>
-                            )}
+                            <div className='flex justify-between items-end'>
+                                {/* Perks */}
+                                {ticket?.perks?.length > 0 && (
+                                    <p className="text-gray-500">
+                                        <p className="font-medium">{ticket.perks.join(", ")}</p> 
+                                    </p>
+                                )}
 
-                            {/* STATUS */}
-                            <p
-                                className={`mt-2 font-semibold ${ticket.status === "pending"
-                                    ? "text-yellow-600"
-                                    : ticket.status === "approved"
-                                        ? "text-secondary-content"
-                                        : "text-red-600"
-                                    }`}
-                            >
-                                Status: {ticket.status}
-                            </p>
+                                {/* STATUS */}
+                                <p
+                                    className={`mt-2 font-semibold ${ticket.adminStatus === "pending"
+                                        ? "text-yellow-600"
+                                        : ticket.adminStatus === "approved"
+                                            ? "text-secondary-content"
+                                            : "text-red-600"
+                                        }`}
+                                >
+                                    Status: {ticket.adminStatus}
+                                </p>
+                            </div>
 
                             {/* BUTTONS */}
                             <div className="flex gap-2 mt-4">
                                 <button
-                                    disabled={ticket.status === "rejected"}
+                                    disabled={ticket.adminStatus === "rejected"}
                                     className="w-full py-2 rounded cursor-pointer bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50"
-                                    onClick={() => navigate(`/update-ticket/${ticket._id}`)}
+                                    onClick={() => navigate(`/dashboard/update-ticket/${ticket._id}`)}
                                 >
                                     Update
                                 </button>
 
                                 <button
                                     onClick={() => handleTicketDelete(ticket._id)}
-                                    disabled={ticket.status === "rejected"}
+                                    disabled={ticket.adminStatus === "rejected"}
                                     className="w-full py-2 rounded cursor-pointer bg-red-500 text-white font-semibold hover:bg-red-600 disabled:opacity-50"
                                 >
                                     Delete
