@@ -20,13 +20,18 @@ const ProfilePage = () => {
         }
     });
 
-    const fullName = dbUser?.displayName || "";
+    const fullName = dbUser.displayName
+
     const nameParts = fullName.split(" ");
+    const firstNameFromDB = nameParts[0] || "";
+    const lastNameFromDB = nameParts.slice(1).join(" ") || "";
+
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [firstName, setFirstName] = useState(nameParts[0] || "");
-    const [lastName, setLastName] = useState(nameParts[1] || "");
+    const [firstName, setFirstName] = useState(firstNameFromDB);
+    const [lastName, setLastName] = useState(lastNameFromDB);
+
     const [imageFile, setImageFile] = useState(null);
 
     const openModal = () => setIsModalOpen(true);
@@ -98,11 +103,11 @@ const ProfilePage = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <p className="text-gray-500">First Name</p>
-                        <p>{nameParts[0]}</p>
+                        <p>{firstNameFromDB}</p>
                     </div>
                     <div>
                         <p className="text-gray-500">Last Name</p>
-                        <p>{nameParts[1]}</p>
+                        <p>{lastNameFromDB}</p>
                     </div>
                     <div>
                         <p className="text-gray-500">Email</p>

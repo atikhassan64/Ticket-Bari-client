@@ -35,7 +35,7 @@ const RevenueOverview = () => {
     const { data: tickets = [], isLoading: ticketLoading } = useQuery({
         queryKey: ['vendorTickets', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get('/tickets');
+            const res = await axiosSecure.get('/tickets/');
             return res.data;
         },
         enabled: !!user?.email,
