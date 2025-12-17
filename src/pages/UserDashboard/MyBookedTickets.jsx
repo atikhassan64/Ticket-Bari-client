@@ -15,7 +15,6 @@ const MyBookedTickets = () => {
         }
     });
 
-    // 🔴 ADD Countdown state for all tickets without changing your code
     const [countdowns, setCountdowns] = useState({});
 
     useEffect(() => {
@@ -55,7 +54,7 @@ const MyBookedTickets = () => {
 
         const res = await axiosSecure.post("/payment", paymentInfo);
 
-// console.log(res.data.url)
+        // console.log(res.data.url)
         window.location.assign(res.data.url);
     }
 
@@ -109,7 +108,7 @@ const MyBookedTickets = () => {
                                             {ticket.status.toUpperCase()}
                                         </span>
 
-                                        {/* 🔴 Countdown like TicketsDetailsPage */}
+                                        {/* Countdown like TicketsDetailsPage */}
                                         {ticket.status !== "rejected" && (
                                             <div className="flex gap-1 text-xs text-gray-500">
                                                 <div className="flex flex-col items-center border border-gray-400 p-1 rounded-lg px-2">
@@ -140,7 +139,7 @@ const MyBookedTickets = () => {
                                         </button>
                                     )}
 
-                                    {countdown.isExpired && (
+                                    {ticket.status !== "paid" && countdown.isExpired && (
                                         <p className="text-xs text-red-500 mt-2">
                                             Departure time passed. Payment unavailable.
                                         </p>

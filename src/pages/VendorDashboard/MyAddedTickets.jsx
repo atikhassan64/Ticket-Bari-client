@@ -107,7 +107,7 @@ const MyAddedTickets = () => {
                                 {/* Perks */}
                                 {ticket?.perks?.length > 0 && (
                                     <p className="text-gray-500">
-                                        <p className="font-medium">{ticket.perks.join(", ")}</p> 
+                                        <span className="font-medium">{ticket.perks.join(", ")}</span> 
                                     </p>
                                 )}
 

@@ -20,6 +20,7 @@ import ManageTickets from "../pages/AdminDashboard/ManageTickets";
 import ManageUsers from "../pages/AdminDashboard/ManageUsers";
 import AdvertiseTickets from "../pages/AdminDashboard/AdvertiseTickets";
 import UpdateTicket from "../pages/VendorDashboard/UpdateTicket";
+import RevenueOverview from "../pages/VendorDashboard/RevenueOverview";
 
 export const router = createBrowserRouter([
     {
@@ -94,6 +95,10 @@ export const router = createBrowserRouter([
             {
                 path: "update-ticket/:id",
                 element: <UpdateTicket></UpdateTicket>
+            },
+            {
+                path: "revenue-overview",
+                element: <RevenueOverview></RevenueOverview>
             },
             // admin
             {
