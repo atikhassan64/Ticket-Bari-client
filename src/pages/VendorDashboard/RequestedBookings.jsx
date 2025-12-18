@@ -9,7 +9,6 @@ const RequestedBookings = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
-    // 🔹 Fetch all booking requests
     const { data: bookings = [], isLoading, refetch } = useQuery({
         queryKey: ["requestedBookings", user?.email],
         queryFn: async () => {
@@ -19,12 +18,10 @@ const RequestedBookings = () => {
         enabled: !!user?.email,
     });
 
-    // 🔹 Vendor শুধু নিজের booking দেখবে
     const vendorBookings = bookings.filter(
         booking => booking.vendorEmail === user?.email
     );
 
-    // ✅ Accept booking
     const handleAccept = (id) => {
         Swal.fire({
             title: "Accept Booking?",
@@ -42,7 +39,6 @@ const RequestedBookings = () => {
         });
     };
 
-    // ❌ Reject booking
     const handleReject = (id) => {
         Swal.fire({
             title: "Reject Booking?",
@@ -123,8 +119,6 @@ const RequestedBookings = () => {
                                 </td>
 
                                 <td className="px-6 py-4 text-left space-x-2">
-
-
                                     {/* Accept Button */}
                                     <button
                                         disabled={booking.status === "accepted"}

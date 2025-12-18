@@ -15,16 +15,15 @@ const AllTickets = () => {
         }
     })
 
-    console.log(tickets)
 
     if (isLoading) {
         return <Loading></Loading>
     }
     return (
         <div className='py-12 bg-base-300'>
-            <div className='max-w-[1200px] mx-auto'>
-                <h2 className="text-3xl font-bold mb-4">All Tickets</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className='max-w-[1200px] mx-auto px-4'>
+                <h2 className="text-3xl font-bold mb-8 text-secondary-content">All Tickets</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {tickets.map(ticket => (
                         <AdminApprovedCard key={ticket._id} ticket={ticket} />
                     ))}

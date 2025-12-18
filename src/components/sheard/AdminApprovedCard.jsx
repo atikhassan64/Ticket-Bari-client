@@ -25,25 +25,32 @@ const AdminApprovedCard = ({ ticket }) => {
                             <div className="p-4 space-y-1">
                                 <h3 className="text-xl font-bold mb-2 text-gray-800-content">{ticket.title}</h3>
 
-                                <p className="text-gray-500">
-                                    <span className="font-semibold">Price:</span> ${ticket.price}
-                                </p>
+                                <div className='flex justify-between items-end'>
+                                    <p className="text-gray-500">
+                                        <span className="font-semibold">Price:</span> ${ticket.price}
+                                    </p>
 
-                                <p className="text-gray-500">
-                                    <span className="font-semibold">Quantity:</span> {ticket.quantity}
-                                </p>
+                                    <p className="text-gray-500">
+                                        <span className="font-semibold">Quantity:</span> {ticket.quantity}
+                                    </p>
+                                </div>
 
-                                <p className="text-gray-500">
-                                    <span className="font-semibold">Transport:</span> {ticket.transport}
-                                </p>
+                                <div className='flex justify-between items-end'>
+                                    {/* Perks */}
+                                    {ticket?.perks?.length > 0 && (
+                                        <p className="text-gray-500">
+                                            <span className="font-medium">{ticket.perks.join(", ")}</span>
+                                        </p>
+                                    )}
+
+                                    <p className="text-gray-500">
+                                        <span className="font-semibold">Transport:</span> {ticket.transport}
+                                    </p>
+                                </div>
 
                                 <p className="text-gray-500">
                                     <span className="font-semibold mr-1">Departure:</span>
                                     {ticket.departure}
-                                </p>
-
-                                <p className="text-gray-500 mb-3">
-                                    <span className="font-semibold">Perks:</span> {ticket.perks.join(", ")}
                                 </p>
 
                                 {/* See Details Button */}

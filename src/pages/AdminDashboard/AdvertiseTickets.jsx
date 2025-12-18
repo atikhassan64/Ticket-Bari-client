@@ -9,10 +9,17 @@ const AdvertiseTickets = () => {
 
     // 🔹 Fetch all admin-approved tickets
     const fetchTickets = async () => {
-        const res = await axiosSecure.get('/tickets');
-        setTickets(res.data);
-        const count = res.data.filter(ticket => ticket.isAdvertised).length;
-        setAdvertisedCount(count);
+        try {
+            const res = await axiosSecure.get('/tickets');
+            setTickets(res.data);
+
+            // শুধু admin-approved এবং isAdvertised টিকেট গুনুন
+            const count = res.data.filter(ticket => ticket.isApproved && ticket.isAdvertised).length;
+            setAdvertisedCount(count);
+        } catch (err) {
+            toast.error('Failed to fetch tickets');
+            console.error(err);
+        }
     };
 
     useEffect(() => {
@@ -21,21 +28,30 @@ const AdvertiseTickets = () => {
 
     // 🔹 Toggle Advertise
     const handleToggleAdvertise = async (ticket) => {
-        // যদি 6 এর বেশি হয়, নতুন Advertise disallow
+        // যদি 6 এর বেশি হয় এবং নতুন টিকেট Advertise করতে চাচ্ছেন
         if (!ticket.isAdvertised && advertisedCount >= 6) {
             toast.error('You can advertise maximum 6 tickets at a time');
             return;
         }
 
-        const updatedStatus = !ticket.isAdvertised;
+        try {
+            const updatedStatus = !ticket.isAdvertised;
 
-        const res = await axiosSecure.patch(`/tickets/advertise/${ticket._id}`, {
-            isAdvertised: updatedStatus
-        });
+            const res = await axiosSecure.patch(`/tickets/advertise/${ticket._id}`, {
+                isAdvertised: updatedStatus
+            });
 
-        if (res.data.modifiedCount > 0) {
-            toast.success(`Ticket "${ticket.title}" ${updatedStatus ? 'Advertised' : 'Unadvertised'}`);
-            fetchTickets();
+            if (res.data.modifiedCount > 0) {
+                toast.success(`Ticket "${ticket.title}" ${updatedStatus ? 'Advertised' : 'Unadvertised'}`);
+
+                // লজিক: সরাসরি state আপডেট করার বদলে আবার ফেচ করা
+                fetchTickets();
+            } else {
+                toast.error('Failed to update ticket');
+            }
+        } catch (err) {
+            toast.error('Something went wrong');
+            console.error(err);
         }
     };
 
@@ -70,7 +86,7 @@ const AdvertiseTickets = () => {
                                 <td>
                                     <button
                                         onClick={() => handleToggleAdvertise(ticket)}
-                                        className={`btn btn-xs ${ticket.isAdvertised ? 'btn-success' : 'btn-outline'} `}
+                                        className={`btn btn-xs ${ticket.isAdvertised ? 'btn-success' : 'btn-outline'}`}
                                     >
                                         {ticket.isAdvertised ? 'Advertised' : 'Advertise'}
                                     </button>
