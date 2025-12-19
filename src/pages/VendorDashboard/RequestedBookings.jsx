@@ -60,7 +60,7 @@ const RequestedBookings = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6">Requested Bookings</h2>
+            <h2 className="text-2xl text-secondary-content font-bold mb-6">Requested Bookings</h2>
 
             <div className="overflow-x-auto bg-base-100 rounded-lg shadow-md">
                 <table className="min-w-full divide-y divide-gray-200">
@@ -123,7 +123,7 @@ const RequestedBookings = () => {
                                     <button
                                         disabled={booking.status === "accepted"}
                                         onClick={() => handleAccept(booking._id)}
-                                        className={`px-3 py-1 bg-green-600 text-white text-xs rounded
+                                        className={`px-3 py-1 lg:mb-0 mb-1 bg-green-600 text-white text-xs rounded
                                         ${booking.status === "accepted"
                                                 ? "opacity-50 cursor-not-allowed"
                                                 : "hover:bg-green-700"}`}

@@ -177,7 +177,7 @@ const RegisterPage = () => {
                                 }
 
                                 {/* Agree */}
-                                <label className="flex items-center gap-2 text-sm  mb-2">
+                                <label className="flex flex-wrap items-center gap-2 text-sm  mb-2">
                                     <input
                                         type="checkbox"
                                         {...register("box", { required: true })}

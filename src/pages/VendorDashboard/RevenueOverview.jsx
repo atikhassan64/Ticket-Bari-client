@@ -35,7 +35,7 @@ const RevenueOverview = () => {
     const { data: tickets = [], isLoading: ticketLoading } = useQuery({
         queryKey: ['vendorTickets', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get('/tickets/');
+            const res = await axiosSecure.get('/tickets');
             return res.data;
         },
         enabled: !!user?.email,
@@ -77,7 +77,7 @@ const RevenueOverview = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6">Revenue Overview</h2>
+            <h2 className="text-2xl text-secondary-content font-bold mb-6">Revenue Overview</h2>
 
             {/* 🔹 Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">

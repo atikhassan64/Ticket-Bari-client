@@ -155,12 +155,6 @@ const Navbar = () => {
         setTheme(checked ? "dark" : "light");
     };
 
-    // const links = <>
-    //     <li><NavLink to={'/'}>Home</NavLink></li>
-    //     <li><NavLink to={'/all-tickets'}>All Tickets</NavLink></li>
-    //     <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
-    // </>
-
     const links = <>
     <li>
         <NavLink

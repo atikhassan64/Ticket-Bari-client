@@ -76,7 +76,7 @@ const ProfilePage = () => {
 
     return (
         <div className="p-6 mx-auto bg-base-100">
-            <h2 className="text-2xl font-semibold mb-6">My Profile</h2>
+            <h2 className="text-2xl font-semibold text-secondary-content mb-6">My Profile</h2>
 
             {/* Profile Card */}
             <div className="flex items-center gap-4 bg-base-200 shadow rounded-lg p-6 mb-6">
@@ -94,13 +94,13 @@ const ProfilePage = () => {
             {/* Personal Information */}
             <div className="bg-base-200 shadow rounded-lg p-6 mb-6">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold">Personal Information</h3>
+                    <h3 className="text-lg text-secondary-content font-semibold">Personal Information</h3>
                     <button onClick={openModal} className="btn button">
                         Edit
                     </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-10">
                     <div>
                         <p className="text-gray-500">First Name</p>
                         <p>{firstNameFromDB}</p>
@@ -109,10 +109,13 @@ const ProfilePage = () => {
                         <p className="text-gray-500">Last Name</p>
                         <p>{lastNameFromDB}</p>
                     </div>
-                    <div>
+                    <div className="w-full">
                         <p className="text-gray-500">Email</p>
-                        <p>{dbUser.email}</p>
+                        <p className="break-all text-sm sm:text-base">
+                            {dbUser.email}
+                        </p>
                     </div>
+
                     <div>
                         <p className="text-gray-500">Role</p>
                         <p>{dbUser.role}</p>

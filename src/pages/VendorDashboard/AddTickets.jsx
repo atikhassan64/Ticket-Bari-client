@@ -69,7 +69,7 @@ const AddTickets = () => {
     return (
         <div className='p-6 mx-auto'>
             <div className="w-full bg-base-100">
-                <h2 className="text-2xl font-bold mb-6">Add New Ticket</h2>
+                <h2 className="text-2xl text-secondary-content font-bold mb-6">Add New Ticket</h2>
 
                 <form onSubmit={handleSubmit(handleAddTickets)} className="bg-base-200 dark:bg-gray-900 shadow-md rounded-2xl p-8 space-y-6 border">
 

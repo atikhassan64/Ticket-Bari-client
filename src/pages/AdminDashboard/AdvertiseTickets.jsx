@@ -5,7 +5,9 @@ import toast from 'react-hot-toast';
 const AdvertiseTickets = () => {
     const axiosSecure = useAxiosSecure();
     const [tickets, setTickets] = useState([]);
-    const [advertisedCount, setAdvertisedCount] = useState(0);
+    const [advertisedCount, setAdvertisedCount] = useState(null);
+
+    console.log(advertisedCount)
 
     // 🔹 Fetch all admin-approved tickets
     const fetchTickets = async () => {
@@ -13,8 +15,10 @@ const AdvertiseTickets = () => {
             const res = await axiosSecure.get('/tickets');
             setTickets(res.data);
 
-            // শুধু admin-approved এবং isAdvertised টিকেট গুনুন
-            const count = res.data.filter(ticket => ticket.isApproved && ticket.isAdvertised).length;
+            const count = res.data.filter(
+                ticket => ticket.isAdvertised
+            ).length;
+
             setAdvertisedCount(count);
         } catch (err) {
             toast.error('Failed to fetch tickets');
@@ -22,13 +26,41 @@ const AdvertiseTickets = () => {
         }
     };
 
+
     useEffect(() => {
         fetchTickets();
     }, []);
 
     // 🔹 Toggle Advertise
+    // const handleToggleAdvertise = async (ticket) => {
+    //     // যদি 6 এর বেশি হয় এবং নতুন টিকেট Advertise করতে চাচ্ছেন
+    //     if (!ticket.isAdvertised && advertisedCount >= 6) {
+    //         toast.error('You can advertise maximum 6 tickets at a time');
+    //         return;
+    //     }
+
+    //     try {
+    //         const updatedStatus = !ticket.isAdvertised;
+
+    //         const res = await axiosSecure.patch(`/tickets/advertise/${ticket._id}`, {
+    //             isAdvertised: updatedStatus,
+    //         });
+
+    //         if (res.data.modifiedCount > advertisedCount) {
+    //             toast.success(`Ticket "${ticket.title}" ${updatedStatus ? 'Advertised' : 'Unadvertised'}`);
+
+    //             // লজিক: সরাসরি state আপডেট করার বদলে আবার ফেচ করা
+    //             fetchTickets();
+    //         } else {
+    //             toast.error('Failed to update ticket');
+    //         }
+    //     } catch (err) {
+    //         toast.error('Something went wrong');
+    //         console.error(err);
+    //     }
+    // };
+
     const handleToggleAdvertise = async (ticket) => {
-        // যদি 6 এর বেশি হয় এবং নতুন টিকেট Advertise করতে চাচ্ছেন
         if (!ticket.isAdvertised && advertisedCount >= 6) {
             toast.error('You can advertise maximum 6 tickets at a time');
             return;
@@ -37,14 +69,17 @@ const AdvertiseTickets = () => {
         try {
             const updatedStatus = !ticket.isAdvertised;
 
-            const res = await axiosSecure.patch(`/tickets/advertise/${ticket._id}`, {
-                isAdvertised: updatedStatus
-            });
+            const res = await axiosSecure.patch(
+                `/tickets/advertise/${ticket._id}`,
+                { isAdvertised: updatedStatus }
+            );
 
             if (res.data.modifiedCount > 0) {
-                toast.success(`Ticket "${ticket.title}" ${updatedStatus ? 'Advertised' : 'Unadvertised'}`);
+                toast.success(
+                    `Ticket "${ticket.title}" ${updatedStatus ? 'Advertised' : 'Unadvertised'}`
+                );
 
-                // লজিক: সরাসরি state আপডেট করার বদলে আবার ফেচ করা
+                // ✅ শুধু server থেকে আবার fetch করো
                 fetchTickets();
             } else {
                 toast.error('Failed to update ticket');
@@ -54,6 +89,8 @@ const AdvertiseTickets = () => {
             console.error(err);
         }
     };
+
+
 
     return (
         <div className="p-6">

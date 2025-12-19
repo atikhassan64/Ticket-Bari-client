@@ -55,7 +55,7 @@ const MyAddedTickets = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-6">My Added Tickets</h2>
+            <h2 className="text-2xl text-secondary-content font-semibold mb-6">My Added Tickets</h2>
 
             {/* GRID */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -17,7 +17,7 @@ const TransactionHistory = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6">Transaction History</h2>
+            <h2 className="text-2xl text-secondary-content font-bold mb-6">Transaction History</h2>
 
             <div className="overflow-x-auto bg-base-100 rounded-xl shadow">
                 <table className="table table-zebra w-full">
