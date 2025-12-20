@@ -80,6 +80,11 @@ const LatestTickets = () => {
                             <AdminApprovedCard key={ticket._id} ticket={ticket} />
                         ))}
                     </div>
+                    {tickets.length === 0 && (
+                            <p colSpan="8" className="text-center py-4">
+                                No latest tickets available.
+                            </p>
+                    )}
                 </div>
             </section>
         </div>

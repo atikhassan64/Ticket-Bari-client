@@ -81,7 +81,7 @@ const DashboardLayout = () => {
                 <Outlet />
             </div>
 
-            {/* ================= SIDEBAR ================= */}
+           
             <div className="drawer-side is-drawer-close:overflow-visible">
                 <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 

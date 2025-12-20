@@ -44,7 +44,7 @@ import Loading from '../../components/sheard/loading/Loading';
 const AllTickets = () => {
     const axiosSecure = useAxiosSecure();
 
-    // 🔹 UI State
+    // UI State
     const [search, setSearch] = useState("");
     const [transport, setTransport] = useState("");
     const [sortPrice, setSortPrice] = useState("");
@@ -63,28 +63,28 @@ const AllTickets = () => {
         return <Loading />;
     }
 
-    // 🔴 LOGIC ONLY (NO CARD STRUCTURE CHANGE)
+    // LOGIC ONLY (NO CARD STRUCTURE CHANGE)
 
-    // 1️⃣ Only admin approved
+    // Only admin approved
     let filteredTickets = tickets.filter(
         ticket => ticket.adminStatus === "approved"
     );
 
-    // 2️⃣ Search (From → To)
+    // Search (From → To)
     filteredTickets = filteredTickets.filter(ticket =>
         `${ticket.from} ${ticket.to}`
             .toLowerCase()
             .includes(search.toLowerCase())
     );
 
-    // 3️⃣ Filter by transport
+    // Filter by transport
     if (transport) {
         filteredTickets = filteredTickets.filter(
             ticket => ticket.transport === transport
         );
     }
 
-    // 4️⃣ Sort by price
+    // Sort by price
     if (sortPrice === "low") {
         filteredTickets.sort((a, b) => a.price - b.price);
     }
@@ -92,7 +92,7 @@ const AllTickets = () => {
         filteredTickets.sort((a, b) => b.price - a.price);
     }
 
-    // 5️⃣ Pagination
+    // Pagination
     const totalPages = Math.ceil(filteredTickets.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedTickets = filteredTickets.slice(
@@ -108,17 +108,17 @@ const AllTickets = () => {
                 </h2>
 
                 {/* 🔹 Search / Filter / Sort */}
-                <div className="flex flex-col md:flex-row gap-4 mb-6">
+                <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
                     <input
                         type="text"
                         placeholder="Search From → To"
-                        className="input input-bordered w-full md:w-1/3"
+                        className="input input-bordered w-full md:w-1/3 flex-1"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
 
                     <select
-                        className="select select-bordered w-full md:w-1/4"
+                        className="select select-bordered w-full md:w-1/4 flex-1"
                         value={transport}
                         onChange={(e) => setTransport(e.target.value)}
                     >
@@ -129,7 +129,7 @@ const AllTickets = () => {
                     </select>
 
                     <select
-                        className="select select-bordered w-full md:w-1/4"
+                        className="select select-bordered w-full md:w-1/4 flex-1"
                         value={sortPrice}
                         onChange={(e) => setSortPrice(e.target.value)}
                     >
@@ -156,16 +156,21 @@ const AllTickets = () => {
                             <button
                                 key={num}
                                 onClick={() => setCurrentPage(num + 1)}
-                                className={`btn btn-sm ${
-                                    currentPage === num + 1
-                                        ? " bg-secondary-content"
-                                        : "btn-outline"
-                                }`}
+                                className={`btn btn-sm ${currentPage === num + 1
+                                    ? " bg-secondary-content"
+                                    : "btn-outline"
+                                    }`}
                             >
                                 {num + 1}
                             </button>
                         ))}
                     </div>
+                )}
+
+                {tickets.length === 0 && (
+                    <p colSpan="8" className="text-center py-4">
+                        No tickets available.
+                    </p>
                 )}
             </div>
         </div>

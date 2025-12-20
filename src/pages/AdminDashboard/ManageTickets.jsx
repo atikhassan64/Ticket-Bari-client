@@ -32,7 +32,7 @@ const ManageTickets = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <h2 className="text-2xl text-secondary-content font-bold mb-6 flex items-center gap-2">
                 Manage Tickets
             </h2>
 
@@ -60,26 +60,13 @@ const ManageTickets = () => {
                                 <td>৳ {ticket.price}</td>
                                 <td>{ticket.vendorEmail}</td>
                                 <td>
-                                    <span className={ticket.adminStatus === "approved" 
-                                    ? "badge badge-success"
-                                    : ticket.adminStatus === "rejected"
-                                    ? "badge badge-error"
-                                    : "badge badge-warning"}>{ticket.adminStatus}</span>
+                                    <span className={ticket.adminStatus === "approved"
+                                        ? "badge badge-success"
+                                        : ticket.adminStatus === "rejected"
+                                            ? "badge badge-error"
+                                            : "badge badge-warning"}>{ticket.adminStatus}</span>
                                 </td>
-                                {/* <td className="flex gap-2">
-                                    <button
-                                    disabled={ticket.status === "approved"}
-                                        onClick={() => handleApprove(ticket)}
-                                        className="btn btn-xs btn-success flex gap-1">
-                                        <FaCheck /> Approve
-                                    </button>
-                                    <button
-                                    disabled={ticket.status==="rejected"}
-                                        onClick={() => handleReject(ticket)}
-                                        className="btn btn-xs btn-error flex gap-1">
-                                        <FaTimes /> Reject
-                                    </button>
-                                </td> */}
+
                                 <td>
                                     <div className="flex gap-2">
                                         <button
@@ -102,6 +89,13 @@ const ManageTickets = () => {
 
                             </tr>
                         ))}
+                        {tickets.length === 0 && (
+                            <tr>
+                                <td colSpan="8" className="text-center py-4">
+                                    No manage-tickets tickets found.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

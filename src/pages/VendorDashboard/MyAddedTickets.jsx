@@ -107,7 +107,7 @@ const MyAddedTickets = () => {
                                 {/* Perks */}
                                 {ticket?.perks?.length > 0 && (
                                     <p className="text-gray-500">
-                                        <span className="font-medium">{ticket.perks.join(", ")}</span> 
+                                        <span className="font-medium">{ticket.perks.join(", ")}</span>
                                     </p>
                                 )}
 
@@ -146,6 +146,12 @@ const MyAddedTickets = () => {
 
                     </div>
                 ))}
+
+                {tickets.length === 0 && (
+                    <p colSpan="8" className="py-4">
+                        No tickets available.
+                    </p>
+                )}
             </div>
         </div>
     );

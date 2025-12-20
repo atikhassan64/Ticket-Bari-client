@@ -31,34 +31,7 @@ const AdvertiseTickets = () => {
         fetchTickets();
     }, []);
 
-    // 🔹 Toggle Advertise
-    // const handleToggleAdvertise = async (ticket) => {
-    //     // যদি 6 এর বেশি হয় এবং নতুন টিকেট Advertise করতে চাচ্ছেন
-    //     if (!ticket.isAdvertised && advertisedCount >= 6) {
-    //         toast.error('You can advertise maximum 6 tickets at a time');
-    //         return;
-    //     }
-
-    //     try {
-    //         const updatedStatus = !ticket.isAdvertised;
-
-    //         const res = await axiosSecure.patch(`/tickets/advertise/${ticket._id}`, {
-    //             isAdvertised: updatedStatus,
-    //         });
-
-    //         if (res.data.modifiedCount > advertisedCount) {
-    //             toast.success(`Ticket "${ticket.title}" ${updatedStatus ? 'Advertised' : 'Unadvertised'}`);
-
-    //             // লজিক: সরাসরি state আপডেট করার বদলে আবার ফেচ করা
-    //             fetchTickets();
-    //         } else {
-    //             toast.error('Failed to update ticket');
-    //         }
-    //     } catch (err) {
-    //         toast.error('Something went wrong');
-    //         console.error(err);
-    //     }
-    // };
+    
 
     const handleToggleAdvertise = async (ticket) => {
         if (!ticket.isAdvertised && advertisedCount >= 6) {
@@ -94,7 +67,7 @@ const AdvertiseTickets = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6">Advertise Tickets</h2>
+            <h2 className="text-2xl text-secondary-content font-bold mb-6">Advertise Tickets</h2>
 
             <div className="overflow-x-auto bg-base-100 rounded-xl shadow">
                 <table className="table w-full">

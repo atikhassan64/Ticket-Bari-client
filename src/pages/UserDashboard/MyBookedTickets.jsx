@@ -148,6 +148,11 @@ const MyBookedTickets = () => {
                             </div>
                         )
                     })}
+                    {bookedTickets.length === 0 && (
+                            <p colSpan="8" className="py-4">
+                                No booked tickets available.
+                            </p>
+                    )}
                 </div>
             </div>
         </div>
