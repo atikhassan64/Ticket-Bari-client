@@ -21,11 +21,13 @@ import ManageUsers from "../pages/AdminDashboard/ManageUsers";
 import AdvertiseTickets from "../pages/AdminDashboard/AdvertiseTickets";
 import UpdateTicket from "../pages/VendorDashboard/UpdateTicket";
 import RevenueOverview from "../pages/VendorDashboard/RevenueOverview";
+import ErrorPage from "../components/sheard/ErrorPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         Component: MainLayout,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 index: true,

@@ -43,8 +43,6 @@ const MyAddedTickets = () => {
                             });
                         }
                     })
-
-
             }
         });
     }

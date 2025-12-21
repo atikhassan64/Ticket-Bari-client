@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 const MyBookedTickets = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
-
+    const [countdowns, setCountdowns] = useState({});
     const { data: bookedTickets = [] } = useQuery({
         queryKey: ["ticketBooked", user?.email],
         queryFn: async () => {
@@ -14,8 +14,6 @@ const MyBookedTickets = () => {
             return res.data
         }
     });
-
-    const [countdowns, setCountdowns] = useState({});
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -42,7 +40,6 @@ const MyBookedTickets = () => {
     }, [bookedTickets]);
 
 
-    // payment 
     const handlePayment = async (ticket) => {
         const paymentInfo = {
             ticketId: ticket._id,
@@ -51,10 +48,7 @@ const MyBookedTickets = () => {
             totalPrice: ticket.unitPrice,
             userEmail: user.email
         };
-
         const res = await axiosSecure.post("/payment", paymentInfo);
-
-        // console.log(res.data.url)
         window.location.assign(res.data.url);
     }
 
@@ -108,7 +102,6 @@ const MyBookedTickets = () => {
                                             {ticket.status.toUpperCase()}
                                         </span>
 
-                                        {/* Countdown like TicketsDetailsPage */}
                                         {ticket.status !== "rejected" && (
                                             <div className="flex gap-1 text-xs text-gray-500">
                                                 <div className="flex flex-col items-center border border-gray-400 p-1 rounded-lg px-2">
@@ -149,9 +142,9 @@ const MyBookedTickets = () => {
                         )
                     })}
                     {bookedTickets.length === 0 && (
-                            <p colSpan="8" className="py-4">
-                                No booked tickets available.
-                            </p>
+                        <p colSpan="8" className="py-4">
+                            No booked tickets available.
+                        </p>
                     )}
                 </div>
             </div>

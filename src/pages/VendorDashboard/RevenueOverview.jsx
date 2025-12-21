@@ -21,7 +21,6 @@ const RevenueOverview = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
-    // 🔹 Fetch bookings
     const { data: bookings = [], isLoading: bookingLoading } = useQuery({
         queryKey: ['revenueBookings', user?.email],
         queryFn: async () => {
@@ -31,7 +30,6 @@ const RevenueOverview = () => {
         enabled: !!user?.email,
     });
 
-    // 🔹 Fetch tickets added by vendor
     const { data: tickets = [], isLoading: ticketLoading } = useQuery({
         queryKey: ['vendorTickets', user?.email],
         queryFn: async () => {
@@ -43,12 +41,10 @@ const RevenueOverview = () => {
 
     if (bookingLoading || ticketLoading) return <Loading />;
 
-    // 🔹 Only vendor related & accepted bookings
     const acceptedBookings = bookings.filter(
         b => b.vendorEmail === user?.email && b.status === 'accepted'
     );
 
-    // 🔹 Calculations
     const totalRevenue = acceptedBookings.reduce(
         (sum, b) => sum + (b.totalPrice || b.price * b.bookingQty),
         0
@@ -63,7 +59,6 @@ const RevenueOverview = () => {
         t => t.vendorEmail === user?.email
     ).length;
 
-    // 🔹 Chart data
     const barData = [
         { name: 'Revenue', value: totalRevenue },
         { name: 'Sold', value: totalTicketsSold },
@@ -79,7 +74,6 @@ const RevenueOverview = () => {
         <div className="p-6">
             <h2 className="text-2xl text-secondary-content font-bold mb-6">Revenue Overview</h2>
 
-            {/* 🔹 Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <div className="bg-base-200 p-6 rounded shadow text-center">
                     <p className="text-gray-500 text-sm">Total Revenue</p>
@@ -95,9 +89,7 @@ const RevenueOverview = () => {
                 </div>
             </div>
 
-            {/* 🔹 Charts */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                {/* Bar Chart */}
                 <div className="bg-base-200 p-6 rounded shadow">
                     <h3 className="font-semibold mb-4">Overview Bar Chart</h3>
                     <ResponsiveContainer width="100%" height={300}>
@@ -110,7 +102,6 @@ const RevenueOverview = () => {
                     </ResponsiveContainer>
                 </div>
 
-                {/* Pie Chart */}
                 <div className="bg-base-200 p-6 rounded shadow">
                     <h3 className="font-semibold mb-4">Tickets Distribution</h3>
                     <ResponsiveContainer width="100%" height={300}>

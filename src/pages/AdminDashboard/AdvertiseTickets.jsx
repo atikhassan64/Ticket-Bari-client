@@ -7,9 +7,6 @@ const AdvertiseTickets = () => {
     const [tickets, setTickets] = useState([]);
     const [advertisedCount, setAdvertisedCount] = useState(null);
 
-    console.log(advertisedCount)
-
-    // 🔹 Fetch all admin-approved tickets
     const fetchTickets = async () => {
         try {
             const res = await axiosSecure.get('/tickets');
@@ -52,7 +49,6 @@ const AdvertiseTickets = () => {
                     `Ticket "${ticket.title}" ${updatedStatus ? 'Advertised' : 'Unadvertised'}`
                 );
 
-                // ✅ শুধু server থেকে আবার fetch করো
                 fetchTickets();
             } else {
                 toast.error('Failed to update ticket');

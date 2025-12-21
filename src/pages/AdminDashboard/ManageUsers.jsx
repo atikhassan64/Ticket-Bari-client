@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure();
 
-    // 🔹 Load all users
     const { data: users = [], refetch } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
@@ -16,7 +15,6 @@ const ManageUsers = () => {
         },
     });
 
-    // 🔹 Make Admin
     const handleMakeAdmin = async (user) => {
         Swal.fire({
             title: "Are you sure?",
@@ -44,8 +42,6 @@ const ManageUsers = () => {
         });
     };
 
-
-    // 🔹 Make Vendor
     const handleMakeVendor = async (user) => {
         Swal.fire({
             title: "Are you sure?",
@@ -73,8 +69,6 @@ const ManageUsers = () => {
         });
     };
 
-
-    // 🔹 Mark Vendor as Fraud
     const handleFraud = async (user) => {
         Swal.fire({
             title: "Are you sure?",
@@ -101,9 +95,6 @@ const ManageUsers = () => {
             }
         });
     };
-
-
-
 
     return (
         <div className="p-6">
@@ -162,7 +153,6 @@ const ManageUsers = () => {
                                         <FaStore /> Vendor
                                     </button>
 
-                                    {/* Mark as Fraud (only for vendor) */}
                                     {/* Mark as Fraud (only for vendor) */}
                                     {user.role === "vendor" && (
                                         <button

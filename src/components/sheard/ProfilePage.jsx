@@ -20,7 +20,7 @@ const ProfilePage = () => {
         }
     });
 
-    const fullName = dbUser.displayName
+    const fullName = dbUser?.displayName;
 
     const nameParts = fullName.split(" ");
     const firstNameFromDB = nameParts[0] || "";

@@ -21,10 +21,7 @@ const Footer = () => {
         <footer className="bg-base-200 text-gray-500 pt-12">
             <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
 
-                {/* Column 1 - Logo + Description */}
                 <div className="-mt-2">
-                    {/* <h2 className="text-2xl font-bold text-white mb-3">TicketBari</h2> */}
-
                     <div className="-ml-3">
                         {
                             theme === "dark" ?
@@ -39,7 +36,6 @@ const Footer = () => {
                     </p>
                 </div>
 
-                {/* Column 2 - Quick Links */}
                 <div>
                     <h3 className="text-xl font-semibold text-secondary-content mb-3">Quick Links</h3>
                     <ul className="space-y-2">
@@ -50,7 +46,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Column 3 - Contact Info */}
                 <div>
                     <h3 className="text-xl font-semibold text-secondary-content mb-3">Contact Info</h3>
                     <ul className="space-y-2">
@@ -66,7 +61,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Column 4 - Payment Methods */}
                 <div>
                     <h3 className="text-xl font-semibold text-secondary-content mb-3">Payment Methods</h3>
                     <div className="flex items-center gap-3 text-4xl">
@@ -78,7 +72,6 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* Bottom bar */}
             <div className="border-t border-gray-700 mt-10 py-4 text-center text-gray-500 text-sm">
                 © 2025 TicketBari. All rights reserved.
             </div>

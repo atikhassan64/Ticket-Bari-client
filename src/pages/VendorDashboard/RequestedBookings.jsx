@@ -121,10 +121,10 @@ const RequestedBookings = () => {
                                 <td className="px-6 py-4 text-left space-x-2">
                                     {/* Accept Button */}
                                     <button
-                                        disabled={booking.status === "accepted"}
+                                        disabled={booking.status === "accepted" || booking.status === "paid"}
                                         onClick={() => handleAccept(booking._id)}
                                         className={`px-3 py-1 lg:mb-0 mb-1 bg-green-600 text-white text-xs rounded
-                                        ${booking.status === "accepted"
+                                        ${booking.status === "accepted" || booking.status === "paid"
                                                 ? "opacity-50 cursor-not-allowed"
                                                 : "hover:bg-green-700"}`}
                                     >
@@ -133,10 +133,10 @@ const RequestedBookings = () => {
 
                                     {/* Reject Button */}
                                     <button
-                                        disabled={booking.status === "rejected"}
+                                        disabled={booking.status === "rejected" || booking.status === "paid"}
                                         onClick={() => handleReject(booking._id)}
                                         className={`px-3 py-1 bg-red-600 text-white text-xs rounded
-                                        ${booking.status === "rejected"
+                                        ${booking.status === "rejected" || booking.status === "paid"
                                                 ? "opacity-50 cursor-not-allowed"
                                                 : "hover:bg-red-700"}`}
                                     >
