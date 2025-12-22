@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "ticket-bari-3ae85",
+    "prod": "ticket-bari-3ae85"
+  },
+  "targets": {},
+  "etags": {}
+}
