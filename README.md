@@ -10,7 +10,7 @@ This project was developed as part of **Assignment B12-A11 (Category-17)** to de
 ---
 
 ## 🌐 Live Website
-🔗 **Live Site:** https://your-live-site-link.vercel.app
+🔗 **Live Site:** https://ticket-bari-3ae85.web.app
 
 ---
 
@@ -176,8 +176,8 @@ This project was developed as part of **Assignment B12-A11 (Category-17)** to de
 ---
 
 ## 📂 GitHub Repositories
-- **Client Repo:** https://github.com/your-username/ticketbari-client
-- **Server Repo:** https://github.com/your-username/ticketbari-server
+- **Client Repo:** https://github.com/atikhassan64/Ticket-Bari-client.git
+- **Server Repo:** https://github.com/atikhassan64/Ticket-Bari-server.git
 
 ---
 
