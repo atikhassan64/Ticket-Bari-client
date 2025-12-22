@@ -17,12 +17,8 @@ This project was developed as part of **Assignment B12-A11 (Category-17)** to de
 ## 🔐 Demo Credentials
 
 ### 👑 Admin
-- **Email:** admin@email.com  
-- **Password:** admin123  
-
-### 🧑‍💼 Vendor
-- **Email:** vendor@email.com  
-- **Password:** vendor123  
+- **Email:** atikhassan@gmail.com 
+- **Password:** 123456Aa@
 
 ---
 
