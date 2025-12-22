@@ -181,21 +181,5 @@ This project was developed as part of **Assignment B12-A11 (Category-17)** to de
 
 ---
 
-## 📹 Project Explanation Video
-🎥 **Video Link:** video_requirement
-
----
-
-## ✅ Assignment Checklist
-- ✔️ 20+ meaningful client commits
-- ✔️ 12+ meaningful server commits
-- ✔️ Secure environment variables
-- ✔️ Fully responsive UI
-- ✔️ Role-based dashboards
-- ✔️ Error-free production deployment
-- ✔️ Reload-safe private routes
-
----
-
 ## ©️ Copyright
 © 2025 **TicketBari**. All rights reserved.
