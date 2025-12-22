@@ -65,13 +65,13 @@ const AllTickets = () => {
                     <input
                         type="text"
                         placeholder="Search From → To"
-                        className="input input-bordered w-full md:w-1/3 flex-1"
+                        className="input input-bordered w-full md:w-1/3 flex-1 "
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
 
                     <select
-                        className="select select-bordered w-full md:w-1/4 flex-1"
+                        className="select select-bordered w-full md:w-1/4 flex-1 "
                         value={transport}
                         onChange={(e) => setTransport(e.target.value)}
                     >
@@ -82,7 +82,7 @@ const AllTickets = () => {
                     </select>
 
                     <select
-                        className="select select-bordered w-full md:w-1/4 flex-1"
+                        className="select select-bordered w-full md:w-1/4 flex-1 "
                         value={sortPrice}
                         onChange={(e) => setSortPrice(e.target.value)}
                     >
