@@ -20,6 +20,10 @@ This project was developed as part of **Assignment B12-A11 (Category-17)** to de
 - **Email:** atikhassan@gmail.com 
 - **Password:** 123456Aa@
 
+### 🧑‍💼 Vendor
+- **Email:** jannati@gmail.com  
+- **Password:** 123456Aa@  
+
 ---
 
 ## 🚀 Key Features
