@@ -4,6 +4,8 @@ import Advertisement from '../../components/home/Advertisement';
 import LatestTickets from '../../components/home/LatestTickets';
 import PopularRoutes from '../../components/home/PopularRoutes';
 import WhyChooseUs from '../../components/home/WhyChooseUs';
+import CustomerReviews from '../../components/home/CustomerReviews';
+import TravelStats from '../../components/home/TravelStats';
 
 const Home = () => {
     return (
@@ -13,6 +15,8 @@ const Home = () => {
             <LatestTickets></LatestTickets>
             <PopularRoutes></PopularRoutes>
             <WhyChooseUs></WhyChooseUs>
+            <CustomerReviews></CustomerReviews>
+            <TravelStats></TravelStats>
         </div>
     );
 };

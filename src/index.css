@@ -62,3 +62,16 @@
 .text {
   margin: 0 1.5em
 }
+/* Hero Swiper Custom Styles */
+.hero-swiper .swiper-pagination {
+    bottom: 30px !important;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+    margin: 0 6px !important;
+    transition: all 0.3s ease !important;
+}
+
+.hero-swiper .swiper-pagination-bullet:hover {
+    transform: scale(1.2) !important;
+}

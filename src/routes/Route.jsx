@@ -22,6 +22,9 @@ import AdvertiseTickets from "../pages/AdminDashboard/AdvertiseTickets";
 import UpdateTicket from "../pages/VendorDashboard/UpdateTicket";
 import RevenueOverview from "../pages/VendorDashboard/RevenueOverview";
 import ErrorPage from "../components/sheard/ErrorPage";
+import About from "../pages/About/About";
+import Contact from "../pages/Contact/Contact";
+import DashboardOverview from "../pages/Dashboard/DashboardOverview";
 
 export const router = createBrowserRouter([
     {
@@ -49,7 +52,14 @@ export const router = createBrowserRouter([
                 path: "all-tickets",
                 element: <PrivateRoute><AllTickets></AllTickets></PrivateRoute>
             },
-
+            {
+                path: "about",
+                element: <About></About>
+            },
+            {
+                path: "contact",
+                element: <Contact></Contact>
+            },
             {
                 path: "ticket-details/:id",
                 element: <PrivateRoute><TicketsDetailsPage></TicketsDetailsPage></PrivateRoute>
@@ -60,6 +70,11 @@ export const router = createBrowserRouter([
         path: "dashboard",
         element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
         children: [
+            // Dashboard Overview (Default)
+            {
+                index: true,
+                element: <DashboardOverview></DashboardOverview>
+            },
             // User routes
             {
                 path: "profile",

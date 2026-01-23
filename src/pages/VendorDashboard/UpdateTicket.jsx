@@ -350,7 +350,7 @@ const UpdateTicket = () => {
                                         type="checkbox"
                                         {...register("perks")}
                                         value={perk}
-                                        defaultChecked={ticket.perks?.includes(perk)}
+                                        defaultChecked={Array.isArray(ticket.perks) ? ticket.perks.includes(perk) : false}
                                         className="checkbox checkbox-sm"
                                     /> {perk}
                                 </label>
