@@ -381,15 +381,9 @@ const Navbar = () => {
                             
                             <Link 
                                 to="/login" 
-                                className="btn btn-ghost btn-sm sm:btn-md font-semibold hover:bg-secondary-content/10 hover:text-secondary-content transition-colors"
-                            >
-                                Login
-                            </Link>
-                            <Link 
-                                to="/register" 
                                 className="btn bg-secondary-content text-white btn-sm sm:btn-md font-semibold hover:bg-secondary-content/90 border-none transition-colors"
                             >
-                                Sign Up
+                                Login
                             </Link>
                         </div>
                     )}
