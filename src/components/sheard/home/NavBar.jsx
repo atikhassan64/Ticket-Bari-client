@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
 import Logo from '../../../assets/logo.png'
 import LogoWhite from '../../../assets/logo-white.png'
 import useAuth from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { 
+    FaSignOutAlt, 
+    FaChevronDown,
+    FaUserCircle
+} from 'react-icons/fa';
 
 const Navbar = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { user, logOutUser } = useAuth();
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
@@ -188,52 +196,139 @@ const Navbar = () => {
 
                     {/* user */}
                     {user ? (
-                        <div className="dropdown dropdown-end">
-                            <div tabIndex={0} role="button"
-                                className="flex items-center gap-3 cursor-pointer hover:bg-base-200 p-2 rounded-xl transition-colors">
-                                <img
-                                    src={dbUser?.photoURL}
-                                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gray-200 dark:border-gray-700 object-cover"
-                                    alt="User Avatar"
-                                />
-                                <div className="hidden md:block text-left">
-                                    <div className="font-semibold text-sm">
+                        <div className="relative">
+                            <motion.div 
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 p-2 sm:p-3 rounded-2xl transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-lg max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                <div className="relative flex-shrink-0">
+                                    <img
+                                        src={dbUser?.photoURL}
+                                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-3 border-white dark:border-gray-700 object-cover shadow-lg ring-2 ring-secondary-content/20"
+                                        alt="User Avatar"
+                                    />
+                                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
+                                </div>
+                                <div className="text-left min-w-0 flex-1">
+                                    <div className="font-bold text-sm sm:text-base text-gray-800 dark:text-gray-200 truncate max-w-[120px] sm:max-w-[150px] md:max-w-[200px] lg:max-w-[250px]">
                                         {dbUser?.displayName}
                                     </div>
-                                    <div className="text-xs text-gray-500 capitalize">
+                                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 capitalize font-medium truncate">
                                         {dbUser?.role || 'User'}
                                     </div>
                                 </div>
-                                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
+                                <motion.div
+                                    animate={{ rotate: isDropdownOpen ? 180 : 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="flex-shrink-0"
+                                >
+                                    <FaChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+                                </motion.div>
+                            </motion.div>
 
-                            <ul
-                                tabIndex={0}
-                                className="dropdown-content menu p-4 shadow-xl bg-base-100 rounded-xl w-56 z-50 border border-gray-100 dark:border-gray-800 mt-2"
-                            >
-                                <li className="mb-2">
-                                    <Link to="/dashboard/profile" className="flex items-center gap-3 p-3 hover:bg-base-200 rounded-lg">
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
-                                        Profile
-                                    </Link>
-                                </li>
-                                <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                                <li>
-                                    <button 
-                                        onClick={handleLogOut} 
-                                        className="flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg w-full text-left"
-                                    >
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                        </svg>
-                                        Logout
-                                    </button>
-                                </li>
-                            </ul>
+                            <AnimatePresence>
+                                {isDropdownOpen && (
+                                    <>
+                                        {/* Backdrop */}
+                                        <div 
+                                            className="fixed inset-0 z-40" 
+                                            onClick={() => setIsDropdownOpen(false)}
+                                        ></div>
+                                        
+                                        {/* Dropdown Menu */}
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                            transition={{ duration: 0.2, ease: "easeOut" }}
+                                            className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden backdrop-blur-xl"
+                                        >
+                                            {/* User Info Header */}
+                                            <div className="p-4 sm:p-6 bg-gradient-to-r from-secondary-content/5 to-secondary-content/10 border-b border-gray-200 dark:border-gray-700">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="relative">
+                                                        <img
+                                                            src={dbUser?.photoURL}
+                                                            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-3 border-white dark:border-gray-700 object-cover shadow-lg"
+                                                            alt="User Avatar"
+                                                        />
+                                                        <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <h3 className="font-bold text-lg text-gray-800 dark:text-gray-200 truncate">
+                                                            {dbUser?.displayName}
+                                                        </h3>
+                                                        <p className="text-sm text-gray-500 dark:text-gray-400 capitalize font-medium truncate">
+                                                            {dbUser?.role || 'User'}
+                                                        </p>
+                                                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 truncate">
+                                                            {dbUser?.email}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Menu Items */}
+                                            <div className="p-2">
+                                                <motion.div
+                                                    whileHover={{ x: 4 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <Link 
+                                                        to="/dashboard/profile" 
+                                                        onClick={() => setIsDropdownOpen(false)}
+                                                        className="flex items-center gap-4 p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-xl transition-all duration-200 group"
+                                                    >
+                                                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
+                                                            <FaUserCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <div className="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                                Profile
+                                                            </div>
+                                                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                                View and edit your profile
+                                                            </div>
+                                                        </div>
+                                                        <FaChevronDown className="w-3 h-3 text-gray-400 rotate-[-90deg] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                                                    </Link>
+                                                </motion.div>
+
+                                                {/* Divider */}
+                                                <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+                                                <motion.div
+                                                    whileHover={{ x: 4 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <button 
+                                                        onClick={() => {
+                                                            handleLogOut();
+                                                            setIsDropdownOpen(false);
+                                                        }}
+                                                        className="flex items-center gap-4 p-3 sm:p-4 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-200 w-full text-left group"
+                                                    >
+                                                        <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center group-hover:bg-red-200 dark:group-hover:bg-red-900/50 transition-colors">
+                                                            <FaSignOutAlt className="w-5 h-5 text-red-600 dark:text-red-400" />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <div className="font-semibold text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">
+                                                                Logout
+                                                            </div>
+                                                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                                Sign out of your account
+                                                            </div>
+                                                        </div>
+                                                        <FaChevronDown className="w-3 h-3 text-red-400 rotate-[-90deg] group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors" />
+                                                    </button>
+                                                </motion.div>
+                                            </div>
+                                        </motion.div>
+                                    </>
+                                )}
+                            </AnimatePresence>
                         </div>
                     ) : (
                         <div className="flex items-center gap-3">

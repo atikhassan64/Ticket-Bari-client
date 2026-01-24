@@ -188,9 +188,9 @@ const DashboardLayout = () => {
                                 alt="User Avatar"
                                 className="w-8 h-8 rounded-full border-2 border-secondary-content/20 object-cover"
                             />
-                            <div className="hidden sm:block">
-                                <div className="text-sm font-semibold">{dbUser?.displayName}</div>
-                                <div className="text-xs text-gray-500 capitalize">{role}</div>
+                            <div className="block min-w-0 flex-1">
+                                <div className="text-sm font-semibold truncate">{dbUser?.displayName}</div>
+                                <div className="text-xs text-gray-500 capitalize truncate">{role}</div>
                             </div>
                         </div>
                     </div>
