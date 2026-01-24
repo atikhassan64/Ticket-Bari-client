@@ -15,27 +15,45 @@ const MainLayout = () => {
             </div>
             <Footer></Footer>
 
+            {/* Enhanced Toast Notifications */}
             <Toaster
-                position="top-center"
+                position="top-right"
                 reverseOrder={false}
                 gutter={8}
                 containerClassName=""
                 containerStyle={{}}
                 toasterId="default"
                 toastOptions={{
-                    className: '',
-                    duration: 2000,
-                    removeDelay: 1000,
+                    className: 'backdrop-blur-md',
+                    duration: 4000,
                     style: {
-                        background: '#363636',
-                        color: '#fff',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        color: '#374151',
+                        border: '1px solid rgba(229, 231, 235, 0.5)',
+                        borderRadius: '12px',
+                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                     },
-
                     success: {
                         duration: 3000,
+                        style: {
+                            background: 'rgba(34, 197, 94, 0.1)',
+                            color: '#15803d',
+                            border: '1px solid rgba(34, 197, 94, 0.2)',
+                        },
                         iconTheme: {
-                            primary: 'green',
-                            secondary: 'black',
+                            primary: '#22c55e',
+                            secondary: '#ffffff',
+                        },
+                    },
+                    error: {
+                        style: {
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            color: '#dc2626',
+                            border: '1px solid rgba(239, 68, 68, 0.2)',
+                        },
+                        iconTheme: {
+                            primary: '#ef4444',
+                            secondary: '#ffffff',
                         },
                     },
                 }}

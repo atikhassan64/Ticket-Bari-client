@@ -164,36 +164,6 @@ const Navbar = () => {
                 {/* navbar end */}
                 <div className="navbar-end flex items-center gap-4">
 
-                    {/* theme toggle */}
-                    <label className="toggle text-base-content scale-90 sm:scale-100">
-                        <input
-                            onChange={(e) => handleTheme(e.target.checked)}
-                            type="checkbox"
-                            defaultChecked={localStorage.getItem('theme') === "dark"}
-                            className="theme-controller"
-                        />
-                        <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
-                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="4"></circle>
-                                <path d="M12 2v2"></path>
-                                <path d="M12 20v2"></path>
-                                <path d="m4.93 4.93 1.41 1.41"></path>
-                                <path d="m17.66 17.66 1.41 1.41"></path>
-                                <path d="M2 12h2"></path>
-                                <path d="M20 12h2"></path>
-                                <path d="m6.34 17.66-1.41 1.41"></path>
-                                <path d="m19.07 4.93-1.41 1.41"></path>
-                            </g>
-                        </svg>
-                        <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
-                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none"
-                                stroke="currentColor">
-                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-                            </g>
-                        </svg>
-                    </label>
-
                     {/* user */}
                     {user ? (
                         <div className="relative">
@@ -296,6 +266,53 @@ const Navbar = () => {
                                                     </Link>
                                                 </motion.div>
 
+                                                {/* Theme Toggle */}
+                                                <motion.div
+                                                    whileHover={{ x: 4 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <div className="flex items-center gap-4 p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-xl transition-all duration-200 group">
+                                                        <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center group-hover:bg-purple-200 dark:group-hover:bg-purple-900/50 transition-colors">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 text-purple-600 dark:text-purple-400">
+                                                                <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
+                                                                    {theme === 'dark' ? (
+                                                                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                                                                    ) : (
+                                                                        <>
+                                                                            <circle cx="12" cy="12" r="4"></circle>
+                                                                            <path d="M12 2v2"></path>
+                                                                            <path d="M12 20v2"></path>
+                                                                            <path d="m4.93 4.93 1.41 1.41"></path>
+                                                                            <path d="m17.66 17.66 1.41 1.41"></path>
+                                                                            <path d="M2 12h2"></path>
+                                                                            <path d="M20 12h2"></path>
+                                                                            <path d="m6.34 17.66-1.41 1.41"></path>
+                                                                            <path d="m19.07 4.93-1.41 1.41"></path>
+                                                                        </>
+                                                                    )}
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <div className="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                                                {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+                                                            </div>
+                                                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                                Switch to {theme === 'dark' ? 'light' : 'dark'} theme
+                                                            </div>
+                                                        </div>
+                                                        <label className="relative inline-flex items-center cursor-pointer">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={theme === 'dark'}
+                                                                onChange={(e) => handleTheme(e.target.checked)}
+                                                                className="sr-only peer"
+                                                            />
+                                                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                                                        </label>
+                                                    </div>
+                                                </motion.div>
+
                                                 {/* Divider */}
                                                 <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
 
@@ -332,6 +349,36 @@ const Navbar = () => {
                         </div>
                     ) : (
                         <div className="flex items-center gap-3">
+                            {/* Theme toggle for non-logged in users */}
+                            <label className="toggle text-base-content scale-90 sm:scale-100">
+                                <input
+                                    onChange={(e) => handleTheme(e.target.checked)}
+                                    type="checkbox"
+                                    defaultChecked={localStorage.getItem('theme') === "dark"}
+                                    className="theme-controller"
+                                />
+                                <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
+                                    <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none"
+                                        stroke="currentColor">
+                                        <circle cx="12" cy="12" r="4"></circle>
+                                        <path d="M12 2v2"></path>
+                                        <path d="M12 20v2"></path>
+                                        <path d="m4.93 4.93 1.41 1.41"></path>
+                                        <path d="m17.66 17.66 1.41 1.41"></path>
+                                        <path d="M2 12h2"></path>
+                                        <path d="M20 12h2"></path>
+                                        <path d="m6.34 17.66-1.41 1.41"></path>
+                                        <path d="m19.07 4.93-1.41 1.41"></path>
+                                    </g>
+                                </svg>
+                                <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
+                                    <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none"
+                                        stroke="currentColor">
+                                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                                    </g>
+                                </svg>
+                            </label>
+                            
                             <Link 
                                 to="/login" 
                                 className="btn btn-ghost btn-sm sm:btn-md font-semibold hover:bg-secondary-content/10 hover:text-secondary-content transition-colors"
